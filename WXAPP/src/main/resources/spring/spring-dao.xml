@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+		http://www.springframework.org/schema/beans/spring-beans-4.1.xsd 
+		http://www.springframework.org/schema/aop 
+		http://www.springframework.org/schema/aop/spring-aop-4.1.xsd 
+		http://www.springframework.org/schema/tx 
+		http://www.springframework.org/schema/tx/spring-tx-4.1.xsd 
+		http://www.springframework.org/schema/context 
+		http://www.springframework.org/schema/context/spring-context-4.1.xsd 
+		http://www.springframework.org/schema/mvc 
+		http://www.springframework.org/schema/mvc/spring-mvc-4.1.xsd">
+		
+	<!-- 加载配置文件 -->
+	<context:property-placeholder location="classpath:db/db.properties" />
+	
+	<!-- 数据库连接 -->
+	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+		<property name="driverClass" value="${write.jdbc.driver}" />
+		<property name="jdbcUrl" value="${write.jdbc.url}" />
+		<property name="user" value="${write.jdbc.username}" />
+		<property name="password" value="${write.jdbc.password}" />
+		<property name="automaticTestTable" value="Test_Connect"/>
+		<property name="idleConnectionTestPeriod" value="600" />
+	</bean>
+	
+	<bean id="dataSource4Read" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+		<property name="driverClass" value="${read.jdbc.driver}" />
+		<property name="jdbcUrl" value="${read.jdbc.url}" />
+		<property name="user" value="${read.jdbc.username}" />
+		<property name="password" value="${read.jdbc.password}" />
+		<property name="automaticTestTable" value="Test_Connect"/>
+		<property name="idleConnectionTestPeriod" value="600" />
+	</bean>
+	
+ 	<bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.connection.useUnicode">true</prop>
+				<prop key="hibernate.connection.characterEncoding">utf-8</prop>
+				<prop key="hibernate.connection.release_mode">auto</prop>
+				<prop key="hibernate.c3p0_min_size">5</prop>
+				<prop key="hibernate.c3p0_max_size">20</prop>
+				<prop key="hibernate.c3p0.timeout">1800</prop>
+				<prop key="hibernate.c3p0.max_statements">50</prop>
+				<prop key="hibernate.c3p0.idle_test_period">60</prop>
+				<prop key="hibernate.c3p0.acquire_increment">1</prop>
+				<prop key="hibernate.hbm2ddl.auto">false</prop>
+				<prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
+				<prop key="hibernate.show_sql">true</prop>
+				<prop key="hibernate.format_sql">true</prop>
+				<prop key="hibernate.max_fetch_depth">1</prop>
+				<prop key="hibernate.default_batch_fetch_size">32</prop>
+			</props>
+		</property>
+		<property name="packagesToScan">
+			<list>
+				<value>cn.enncloud.bean</value>
+			</list>
+		</property>
+	</bean> 
+	
+	<bean id="sessionFactory4Read" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+		<property name="dataSource" ref="dataSource4Read" />
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.connection.useUnicode">true</prop>
+				<prop key="hibernate.connection.characterEncoding">utf-8</prop>
+				<prop key="hibernate.connection.release_mode">auto</prop>
+				<prop key="hibernate.c3p0_min_size">5</prop>
+				<prop key="hibernate.c3p0_max_size">20</prop>
+				<prop key="hibernate.c3p0.timeout">1800</prop>
+				<prop key="hibernate.c3p0.max_statements">50</prop>
+				<prop key="hibernate.c3p0.idle_test_period">60</prop>
+				<prop key="hibernate.c3p0.acquire_increment">1</prop>
+				<prop key="hibernate.hbm2ddl.auto">false</prop>
+				<prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
+				<prop key="hibernate.show_sql">true</prop>
+				<prop key="hibernate.format_sql">true</prop>
+				<prop key="hibernate.max_fetch_depth">1</prop>
+				<prop key="hibernate.default_batch_fetch_size">32</prop>
+			</props>
+		</property>
+		<property name="packagesToScan">
+			<list>
+				<value>cn.enncloud.bean</value>
+			</list>
+		</property>
+	</bean>
+	
+</beans>
