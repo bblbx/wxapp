@@ -108,15 +108,8 @@ public class ServletController {
 				return new ModelAndView("weihu");
 			}
 		}
-		Map<String,List<Map<String,String>>> fucntions = functionService.queryFunctionsByOpenId(openid);
-		boolean flag = true;
-		if(fucntions.size()==0){
-			flag = false;
-		}
 		ModelAndView modelAndView = new ModelAndView("other");
 		modelAndView.addObject("openid", openid);
-		modelAndView.addObject("functions",fucntions);
-		modelAndView.addObject("flag",flag);
 		return modelAndView;
 	}
 	

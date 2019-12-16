@@ -12,12 +12,16 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import cn.enncloud.util.Constants;
 import cn.enncloud.util.PropertyConstants;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class LoginFilter extends HttpServlet implements Filter {
-	
+	private static final Logger logger = LoggerFactory.getLogger(LoginFilter.class);
 	private static final long serialVersionUID = 1L;
 		
 	@Override
@@ -49,6 +53,12 @@ public class LoginFilter extends HttpServlet implements Filter {
  			chain.doFilter(request,response); //测试
 		 } else {
 	    	  String path = req.getRequestURI().substring(req.getContextPath().length()); 
+	    	  if(!Constants.WhitePath.contains(path)){//黑名单中的地址不允许访问
+	    	    	 logger.info("不是在微信浏览器中打开，限制访问"+requestURL+" userAgent:"+userAgent);
+	    	    	 System.out.println("不是在微信浏览器中打开，限制访问"+requestURL+" userAgent:"+userAgent);
+		    		  resp.sendRedirect(req.getContextPath()+"/page/errorpage01.html");//提示页面
+		    		  return ;
+		    	  }
 	    	  chain.doFilter(request,response); return ;
 		 }
     	  return ;
