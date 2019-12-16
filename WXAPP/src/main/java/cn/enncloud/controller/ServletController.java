@@ -19,7 +19,6 @@ import org.springframework.web.servlet.view.RedirectView;
 
 import com.alibaba.fastjson.JSONObject;
 
-import cn.enncloud.service.CommonService;
 import cn.enncloud.service.FunctionService;
 import cn.enncloud.util.CommonUtil;
 import cn.enncloud.util.PropertyConstants;
@@ -37,17 +36,13 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/servlet")
 public class ServletController {
 	
-	@Autowired
-	private FunctionService functionService;
-	
-	@Autowired
-	private CommonService commonService;
-	
 	// 根据点击公众号中菜单的不同进行不同的业务操作
 	@RequestMapping("/webhome")
 	@ResponseBody
 	public ModelAndView webHome(HttpServletRequest request, Model model) {
 		String requestpage = request.getParameter("requestpage");// 获取请求的页面
+		String sphere = request.getParameter("s");// 领域
+		String grade = request.getParameter("g");// 级别
 		String code = request.getParameter("code");
 		String openid = request.getParameter("openid");
 		if (openid == null || "".equals(openid)) {
@@ -74,7 +69,10 @@ public class ServletController {
 
 		ModelAndView modelAndView = null;
 		if ("other".equals(requestpage)) {
-			modelAndView = new ModelAndView(new RedirectView("../servlet/otherMainPage?openid=" + openid));
+			modelAndView = new ModelAndView(new RedirectView("../servlet/otherweb"));
+			modelAndView.addObject("sphere", sphere);
+			modelAndView.addObject("grade", grade);
+			modelAndView.addObject("openid", openid);
 		} else {
 			modelAndView = new ModelAndView(requestpage);
 			modelAndView.addObject("openid", openid);
@@ -92,26 +90,26 @@ public class ServletController {
 	 * @param model
 	 * @return ModelAndView
 	 */
-	@RequestMapping("/otherMainPage")
-	@ResponseBody
-	public ModelAndView otherMainPage(HttpServletRequest request, Model model) {
-		String openid = request.getParameter("openid");
-		log.info("用户openid为" + openid);
-		
-		if (openid == null || openid.equals("")) {
-			return new ModelAndView("weihu");
-		}
-		
-		if (PropertyConstants.TEST_ENV) {
-			if (!PropertyConstants.TestAllowOpenId.contains(openid)) {
-				log.info("限制访问" + openid);
-				return new ModelAndView("weihu");
-			}
-		}
-		ModelAndView modelAndView = new ModelAndView("other");
-		modelAndView.addObject("openid", openid);
-		return modelAndView;
-	}
+//	@RequestMapping("/otherMainPage")
+//	@ResponseBody
+//	public ModelAndView otherMainPage(HttpServletRequest request, Model model) {
+//		String openid = request.getParameter("openid");
+//		log.info("用户openid为" + openid);
+//		
+//		if (openid == null || openid.equals("")) {
+//			return new ModelAndView("weihu");
+//		}
+//		
+//		if (PropertyConstants.TEST_ENV) {
+//			if (!PropertyConstants.TestAllowOpenId.contains(openid)) {
+//				log.info("限制访问" + openid);
+//				return new ModelAndView("weihu");
+//			}
+//		}
+//		ModelAndView modelAndView = new ModelAndView("other");
+//		modelAndView.addObject("openid", openid);
+//		return modelAndView;
+//	}
 	
 	/**
 	 * @Description: 点击功能列表中显示对应的页面
@@ -126,17 +124,16 @@ public class ServletController {
 	@RequestMapping("/otherweb")
 	@ResponseBody
 	public ModelAndView otherWeb(HttpServletRequest request, Model model) {
-		String requestpage = request.getParameter("requestpage");// 获取请求的页面
+		String grade = request.getParameter("grade");// 请求的类型信息
+		String sphere = request.getParameter("sphere");// 请求的类型信息
 		String openid = request.getParameter("openid");
-		
-		
-		ModelAndView modelAndView = new ModelAndView(requestpage);
+		ModelAndView modelAndView = null;
+		if("01".equals(grade)){
+			modelAndView = new ModelAndView("ProductList");
+		}
 		modelAndView.addObject("openid", openid);
-		if ("repair/addRepairman".equals(requestpage)) {
-			List stationList = commonService.queryStationByOpenId(openid);
-			modelAndView.addObject("stationlist", stationList);
-		} 
-		
+		modelAndView.addObject("grade", grade);
+		modelAndView.addObject("sphere", sphere);
 		return modelAndView;
 	}
 }
