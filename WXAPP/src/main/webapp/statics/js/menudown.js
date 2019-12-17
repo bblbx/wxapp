@@ -1,9 +1,15 @@
 $(function(){
     var v_width= $(document.body).width();
+    var v_height= $(window).height();
     $(".select_textul").width(v_width);
+    $(".shaixuan_panelcont").width(v_width*0.8);
+    $(".shaixuan_panelcont").height(v_height-$(".shaixuan_textdiv").height()-$(".footer-navBar").height());
+    $(".footer-navBar").width($(".shaixuan_panelcont").width());
+    $(".footer-navBar").css('bottom',-v_height+$(".shaixuan_textdiv").height());
     
     $(".select_textdiv").click(function(){
 		$(this).parent().parent().siblings().find(".select_textul").hide();
+		$(this).parent().parent().siblings().find(".shaixuan_paneldiv").hide();
     	$(".select_textdiv").removeClass("divfocus");
     	$(this).addClass("divfocus");
     	$(this).siblings(".select_textul").fadeToggle(100);
@@ -45,5 +51,9 @@ $(function(){
 			event.stopPropagation();
 		});
 	}
-		
+    $(".shaixuan_textdiv").click(function(){
+		$(this).parent().parent().siblings().find(".select_textul").hide();
+    	$(".select_textdiv").removeClass("divfocus");
+    	$(this).siblings(".shaixuan_paneldiv").fadeToggle(100);
+    })	
 })
