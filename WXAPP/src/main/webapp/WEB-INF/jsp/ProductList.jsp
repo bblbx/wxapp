@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="zh-cmn-Hans">
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt"%>
 <head>
     <meta charset="UTF-8">
     <meta HTTP-EQUIV="pragma" CONTENT="no-cache">
@@ -11,11 +11,12 @@
 	<meta content="telephone=no" name="format-detection">
 	 <script type="text/javascript" src="../statics/js/jquery-3.2.1.min.js"></script>
 	 <script type="text/javascript" src="../statics/js/menudown.js"></script>
+	 <script type="text/javascript" src="../statics/js/common.js"></script>
 	 <link href="../statics/css/productlist.css" rel="stylesheet" type="text/css">
 	 <link href="../statics/css/menudown.css" rel="stylesheet" type="text/css">
 
 </head>
-<body>
+<body >
 <section class="jq22-flexView">
 	<header class="jq22-navBar topmenu">
 	<dt>
@@ -79,28 +80,102 @@
 	</dt>
 	</header>
 	<section class="jq22-scrollView">
-		<div class="jq22-limit-box">
-		<a href="javascript:;" class="jq22-flex b-line">
+		<div class="jq22-limit-box" id="viewcompanydiv">
+		<c:forEach var="item"  items="${data}">
+			<a href="javascript:;" class="jq22-flex b-line">
 			<div class="jq22-flex-time-img">
-			<img src="../statics/img/time-img-001.jpg" alt="">
+			<img src="${item['ImgUrl']}" alt="">
 			</div>
 			<div class="jq22-flex-box">
-			<h1>美吉姆</h1>
+			<h1>${item['SimpleName']}</h1>
 			<div class="jq22-flex jq22-flex-clear-pa">
 			<div class="jq22-flex-box">
 			<div style="float: left;">
-			<h3>服务年龄:<font color="red">3-5岁</font></h3>
+			<h3>服务年龄:<font color="red">${item['BeginAge']}-${item['EndAge']}岁</font></h3>
 			</div>
 			<div style="float: right;">
-			<h3>点击量:</h3>
+			<h3>点击量:${item['VisitNum']}</h3>
 			</div>
 			</div>
 			</div>
-			<h2>主营项目:智力启蒙智力启蒙智力启蒙智力启蒙智力启蒙智力启蒙智力启蒙智力启蒙智力启蒙智力启蒙</h2>
+			<h2>主营项目:${item['MainBusiness']}</h2>
 			</div>
 			</a>
+			<hr/>
+		</c:forEach>
 		</div>
+		<div style="text-align: center; color: #DDDDDD; display: none;" id="end">--已经到底了--</div>
 	</section>
 </section>
 </body>
+<script type="text/javascript">
+var page=2;
+var now=1;
+var winH = $(window).height(); //页面可视区域高度
+var hasall=false;
+ //滚动触发
+$('section').scroll(function () {
+	var pageH = $(document.body).height();
+	var scrollT = $(window).scrollTop(); //滚动条top
+	var aa = (pageH - winH - scrollT) / winH;
+	if (aa <= 0.01 && !hasall && page != now) {
+		now = page;
+		var postData = {};
+		postData.page = page;
+		postData.openid = "${openid}";
+		postData.grade = "${grade}";
+		postData.sphere = "${sphere}";
+		loadingShow('viewcompanydiv');
+		$.ajax({
+			type : 'POST',
+			url : "../company/getcompanylist",
+			data : postData,
+			success : function(serverData) {
+				if (serverData.success == 'true') {
+					if (serverData.msg.length > 0) {
+						for (var i = 0; i < serverData.msg.length; i++) {
+							var html = "<a href='javascript:;' class='jq22-flex b-line'>"+
+							"<div class='jq22-flex-time-img'>"+
+							"<img src='"+serverData.msg[i].ImgUrl+"' >"+
+							"</div>"+
+							"<div class='jq22-flex-box'>"+
+							"<h1>"+serverData.msg[i].SimpleName+"</h1>"+
+							"<div class='jq22-flex jq22-flex-clear-pa'>"+
+							"<div class='jq22-flex-box'>"+
+							"<div style='float: left;'>"+
+							"<h3>服务年龄:<font color='red'>"+serverData.msg[i].BeginAge+"-"+serverData.msg[i].EndAge+"岁</font></h3>"+
+							"</div>"+
+							"<div style='float: right;'>"+
+							"<h3>点击量:"+serverData.msg[i].VisitNum+"</h3>"+
+							"</div>"+
+							"</div>"+
+							"</div>"+
+							"<h2>主营项目:"+serverData.msg[i].MainBusiness+"</h2>"+
+							"</div>"+
+							"</a><hr/>"
+							;
+							$("#viewcompanydiv").append(html);
+						} 
+						if (serverData.msg.length < 10) {
+							hasall = true;//已经到底
+							$("#end").show();
+						}
+						page++;
+					} else {
+						hasall = true;//已经到底
+						$("#end").show();
+					}
+					loadingHide();
+				} else {
+					hasall = true;//已经到底
+					$("#end").show();
+					loadingHide();
+				}
+			},
+			dataType : "json"
+		});
+	}
+});
+
+</script>
 </html>

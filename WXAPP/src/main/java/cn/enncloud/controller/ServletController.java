@@ -1,14 +1,13 @@
 package cn.enncloud.controller;
 
-import java.io.UnsupportedEncodingException;
-import java.math.BigDecimal;
-import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,8 +18,8 @@ import org.springframework.web.servlet.view.RedirectView;
 
 import com.alibaba.fastjson.JSONObject;
 
-import cn.enncloud.service.FunctionService;
-import cn.enncloud.util.CommonUtil;
+import cn.enncloud.service.CompanyService;
+import cn.enncloud.util.DataUtil;
 import cn.enncloud.util.PropertyConstants;
 import cn.enncloud.wx.util.WXUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -35,7 +34,9 @@ import lombok.extern.slf4j.Slf4j;
 @RestController
 @RequestMapping("/servlet")
 public class ServletController {
-	
+	private static final Logger logger = LoggerFactory.getLogger(ServletController.class);
+	@Autowired
+	private CompanyService companyService;
 	// 根据点击公众号中菜单的不同进行不同的业务操作
 	@RequestMapping("/webhome")
 	@ResponseBody
@@ -120,17 +121,26 @@ public class ServletController {
 	 * @param model
 	 * @return ModelAndView
 	 */
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@RequestMapping("/otherweb")
 	@ResponseBody
 	public ModelAndView otherWeb(HttpServletRequest request, Model model) {
 		String grade = request.getParameter("grade");// 请求的类型信息
 		String sphere = request.getParameter("sphere");// 请求的类型信息
 		String openid = request.getParameter("openid");
-		ModelAndView modelAndView = null;
-		if("01".equals(grade)){
-			modelAndView = new ModelAndView("ProductList");
+		ModelAndView modelAndView = new ModelAndView("ProductList");
+		Map<String,Object> params = new HashMap<String, Object>();
+		List<String> sp = new ArrayList<String>(),gr = new ArrayList<String>();
+		if(!DataUtil.IsNull(grade)){
+			gr.add(grade);
 		}
+		if(!DataUtil.IsNull(sphere)){
+			sp.add(sphere);
+		}
+		params.put("sphere", sp);
+		params.put("grade", gr);
+		logger.info("用户"+openid+"查询公司列表，sphere="+sphere+"查询公司列表，grade="+grade);
+		List<Map<String,Object>> list = companyService.getCompanySimpleInfoList(params, 1, 20);
+		modelAndView.addObject("data", list);
 		modelAndView.addObject("openid", openid);
 		modelAndView.addObject("grade", grade);
 		modelAndView.addObject("sphere", sphere);
