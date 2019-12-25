@@ -18,6 +18,7 @@ import org.springframework.web.servlet.view.RedirectView;
 
 import com.alibaba.fastjson.JSONObject;
 
+import cn.enncloud.service.CommonService;
 import cn.enncloud.service.CompanyService;
 import cn.enncloud.util.DataUtil;
 import cn.enncloud.util.PropertyConstants;
@@ -37,6 +38,8 @@ public class ServletController {
 	private static final Logger logger = LoggerFactory.getLogger(ServletController.class);
 	@Autowired
 	private CompanyService companyService;
+	@Autowired
+	private CommonService commonService;
 	// 根据点击公众号中菜单的不同进行不同的业务操作
 	@RequestMapping("/webhome")
 	@ResponseBody
@@ -140,7 +143,9 @@ public class ServletController {
 		params.put("grade", gr);
 		logger.info("用户"+openid+"查询公司列表，sphere="+sphere+"查询公司列表，grade="+grade);
 		List<Map<String,Object>> list = companyService.getCompanySimpleInfoList(params, 1, 20);
+		List<Map<String,Object>> selectList =  commonService.getSelectInfo("03");
 		modelAndView.addObject("data", list);
+		modelAndView.addObject("county", selectList);
 		modelAndView.addObject("openid", openid);
 		modelAndView.addObject("grade", grade);
 		modelAndView.addObject("sphere", sphere);

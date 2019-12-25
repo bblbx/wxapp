@@ -12,9 +12,10 @@
 	 <script type="text/javascript" src="../statics/js/jquery-3.2.1.min.js"></script>
 	 <script type="text/javascript" src="../statics/js/menudown.js?v=11"></script>
 	 <script type="text/javascript" src="../statics/js/common.js"></script>
-	 <link href="../statics/css/common.css?v=1" rel="stylesheet" type="text/css">
+	 <script type="text/javascript" src="../statics/js/productlist.js"></script>
+	 <link href="../statics/css/common.css" rel="stylesheet" type="text/css">
 	 <link href="../statics/css/menudown.css" rel="stylesheet" type="text/css">
-
+	 <link href="../statics/css/productlist.css"  rel="stylesheet" type="text/css">
 </head>
 <body >
 <section class="jq22-flexView">
@@ -62,19 +63,32 @@
 				<img src="../statics/img/shaixuan.png" style="width:1rem;"></span>
 			</div>
 			<div class="shaixuan_paneldiv">
-			<div class="shaixuan_panelcont">
-			<input type="checkbox" >
-						111 <br/>woshi <br/>woshi <br/>woshi <br/>woshi <br/>woshi <br/>
-			woshi <br/>woshi <br/>woshi <br/>woshi <br/>woshi <br/>woshi <br/>
-			woshi <br/>woshi <br/>woshi <br/>woshi <br/>woshi <br/>woshi <br/>
-			woshi <br/>woshi <br/>woshi <br/>woshi <br/>woshi <br/>woshi <br/>woshi <br/>
-			woshi <br/>woshi <br/>woshi <br/>woshi <br/>woshi <br/>woshi <br/>
-			woshi <br/>woshi <br/>woshi <br/>woshi <br/>woshi <br/>woshi <br/>
-			woshi <br/>woshi <br/>woshi <br/>woshi <br/>woshi <br/>woshi333 <br/>
+			<div class="shaixuan_panelcont" style="z-index: 10;">
+			<div class="selectbox" data-selectbox-name="age">
+				<div class="title">
+				<span>我是title</span>
+				</div>
+				<div class="content" style="text-align: center;">
+				<c:forEach var="item" begin="0"  end="17">
+				<span class="multiple" data-age=${item}>${item}</span>
+				</c:forEach>
+				</div>
 			</div>
-			 <div class="footer-navBar" >
-			 <a>确定</a> <a>重置</a>
-			</div> 
+			<div class="selectbox" data-selectbox-name="county">
+				<div class="title">
+				<span>我是title2</span>
+				</div>
+				<div class="content" style="text-align: center;">
+				<c:forEach var="item" items="${county}">
+				<span class="single" data-county=${item['Name']}>${item['Name']}</span>
+				</c:forEach>
+				</div>
+			</div>
+			</div>
+			 <div class="footer-navBar" style="z-index: 10;">
+			 <a class="submit">确定</a> <a  class="reset">重置</a>
+			</div>
+			<div class="shade"></div>
 			</div>
 		</div>
 	</dt>
