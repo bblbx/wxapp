@@ -35,21 +35,43 @@ public class CompanyController {
 		res.put("msg", "没有查询到记录！");
 		String grade = request.getParameter("grade");// 请求的类型信息
 		String sphere = request.getParameter("sphere");// 请求的类型信息
+		String age = request.getParameter("age");// 年龄
+		String county = request.getParameter("county");// 区县
+		String viewOrder = request.getParameter("viewOrder");// 请求的类型信息
+		String ageOrder = request.getParameter("ageOrder");// 请求的类型信息
 		String openid = request.getParameter("openid");
 		String page = request.getParameter("page");
-		logger.info("用户"+openid+"分页查询公司列表，sphere="+sphere+"查询公司列表，grade="+grade);
+		
 		Map<String,Object> params = new HashMap<String, Object>();
-		List<String> sp = new ArrayList<String>(),gr = new ArrayList<String>();
+		List<String> sp = new ArrayList<String>(),gr = new ArrayList<String>(),ageList = new ArrayList<String>(),countyList = new ArrayList<String>();
 		if(!DataUtil.IsNull(grade)){
 			gr.add(grade);
 		}
 		if(!DataUtil.IsNull(sphere)){
 			sp.add(sphere);
 		}
+		if(!DataUtil.IsNull(age)){
+			String[] temp = age.split(",");
+			for(String item:temp){
+				ageList.add(item);
+			}
+		}
+		if(!DataUtil.IsNull(county)){
+			String[] temp = county.split(",");
+			for(String item:temp){
+				countyList.add(item);
+			}
+		}
 		params.put("sphere", sp);
 		params.put("grade", gr);
-		List<Map<String,Object>> list = companyService.getCompanySimpleInfoList(params, Integer.parseInt(page), 20);
-		if(list.size()!=0){
+		params.put("viewOrder", viewOrder);
+		params.put("ageOrder", ageOrder);
+		params.put("county", countyList);
+		params.put("age", ageList);
+		params.put("openid", openid);
+		logger.info("用户"+openid+"分页查询公司列表，params="+params);
+		List<Map<String,Object>> list = companyService.getCompanySimpleInfoList(params, Integer.parseInt(DataUtil.FillNull(page, "1").toString()), 20);
+		if(list !=null){
 			res.put("success", "true");
 			res.put("msg", list);
 		}

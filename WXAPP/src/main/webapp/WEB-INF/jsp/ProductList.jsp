@@ -10,7 +10,7 @@
 	<meta content="black" name="apple-mobile-web-app-status-bar-style">
 	<meta content="telephone=no" name="format-detection">
 	 <script type="text/javascript" src="../statics/js/jquery-3.2.1.min.js"></script>
-	 <script type="text/javascript" src="../statics/js/menudown.js?v=11"></script>
+	 <script type="text/javascript" src="../statics/js/menudown.js"></script>
 	 <script type="text/javascript" src="../statics/js/common.js"></script>
 	 <script type="text/javascript" src="../statics/js/productlist.js"></script>
 	 <link href="../statics/css/common.css" rel="stylesheet" type="text/css">
@@ -23,16 +23,16 @@
 	<dt>
 		<div class="selectlist">
 			<div class="select_textdiv">
-				<input type="hidden" value="年龄升序" name="ageOrder"/>
+				<input type="hidden" value="0" name="ageOrder"/>
 				<p class="s_text">年龄升序</p><span class="down"><img src="../statics/img/down.png"></span>
 			</div>
 			<div class="select_textul">
 				<ul class="select_first_ul">
 					<li class="focus">
-						<p>年龄升序</p>
+						<p data-value='0'>年龄升序</p>
 					</li>
 					<li>
-						<p>年龄降序</p>
+						<p data-value='1'>年龄降序</p>
 					</li>
 				</ul>
 			</div>
@@ -41,16 +41,16 @@
 		<dt>
 		<div class="selectlist">
 			<div class="select_textdiv">
-				<input type="hidden" value="" name="viewOrder"/>
-				<p class="s_text">点击量</p><span class="down"><img src="../statics/img/down.png"></span>
+				<input type="hidden" value="1" name="viewOrder"/>
+				<p class="s_text">点击量降序</p><span class="down"><img src="../statics/img/down.png"></span>
 			</div>
 			<div class="select_textul">
 				<ul class="select_first_ul">
 					<li >
-						<p>点击量降序</p>
+						<p data-value='0'>点击量升序</p>
 					</li>
 					<li>
-						<p>点击量升序</p>
+						<p data-value='1'>点击量降序</p>
 					</li>
 				</ul>
 			</div>
@@ -123,84 +123,11 @@
 </section>
 </body>
 <script type="text/javascript">
-$(document).ready(function(){
-	$("input[name=ageOrder]").on('change',function(){
-		alert(this.value+""+$("input[name=viewOrder]").val());
-	});
-	$("input[name=viewOrder]").on('change',function(){
-		alert(this.value+""+$("input[name=ageOrder]").val());
-	});
-})
-
-
-
+var sphere = '${sphere}',grade='${grade}',openid='${openid}',openid= "${openid}";
+var ageArr =[],county=[];
 var page=2;
 var now=1;
 var winH = $(window).height(); //页面可视区域高度
 var hasall=false;
- //滚动触发
-$('section').scroll(function () {
-	var pageH = $(document.body).height();
-	var scrollT = $(window).scrollTop(); //滚动条top
-	var aa = (pageH - winH - scrollT) / winH;
-	if (aa <= 0.01 && !hasall && page != now) {
-		now = page;
-		var postData = {};
-		postData.page = page;
-		postData.openid = "${openid}";
-		postData.grade = "${grade}";
-		postData.sphere = "${sphere}";
-		loadingShow('viewcompanydiv');
-		$.ajax({
-			type : 'POST',
-			url : "../company/getcompanylist",
-			data : postData,
-			success : function(serverData) {
-				if (serverData.success == 'true') {
-					if (serverData.msg.length > 0) {
-						for (var i = 0; i < serverData.msg.length; i++) {
-							var html = "<a href='../company/detail?id="+serverData.msg[i].CompanyID+"&grade=${grade}&sphere=${sphere}' class='jq22-flex b-line'>"+
-							"<div class='jq22-flex-time-img'>"+
-							"<img src='"+serverData.msg[i].ImgUrl+"' >"+
-							"</div>"+
-							"<div class='jq22-flex-box'>"+
-							"<h1>"+serverData.msg[i].SimpleName+"</h1>"+
-							"<div class='jq22-flex jq22-flex-clear-pa'>"+
-							"<div class='jq22-flex-box'>"+
-							"<div style='float: left;'>"+
-							"<h3>服务年龄:<font color='red'>"+serverData.msg[i].BeginAge+"-"+serverData.msg[i].EndAge+"岁</font></h3>"+
-							"</div>"+
-							"<div style='float: right;'>"+
-							"<h3>点击量:"+serverData.msg[i].VisitNum+"</h3>"+
-							"</div>"+
-							"</div>"+
-							"</div>"+
-							"<h2>主营项目:"+serverData.msg[i].MainBusiness+"</h2>"+
-							"</div>"+
-							"</a><hr/>"
-							;
-							$("#viewcompanydiv").append(html);
-						} 
-						if (serverData.msg.length < 10) {
-							hasall = true;//已经到底
-							$("#end").show();
-						}
-						page++;
-					} else {
-						hasall = true;//已经到底
-						$("#end").show();
-					}
-					loadingHide();
-				} else {
-					hasall = true;//已经到底
-					$("#end").show();
-					loadingHide();
-				}
-			},
-			dataType : "json"
-		});
-	}
-});
-
 </script>
 </html>

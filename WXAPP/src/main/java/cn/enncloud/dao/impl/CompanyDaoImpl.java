@@ -9,12 +9,16 @@ import javax.annotation.Resource;
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.hibernate.transform.Transformers;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
+import cn.enncloud.controller.ServletController;
 import cn.enncloud.dao.CompanyDao;
+import cn.enncloud.util.DataUtil;
 @Repository
 public class CompanyDaoImpl implements CompanyDao{
-	
+	private static final Logger logger = LoggerFactory.getLogger(ServletController.class);
 	private SessionFactory sessionFactory; 
 	@Resource(name = "sessionFactory")
 	public void setSessionFactory(SessionFactory sessionFactory) {
@@ -29,16 +33,26 @@ public class CompanyDaoImpl implements CompanyDao{
 				+ "where com.`Status`=1 ");
 		List<String> sphere = (List<String>)params.get("sphere");
 		List<String> grade = (List<String>)params.get("grade");
+		List<String> age = (List<String>)params.get("age");
+		List<String> county = (List<String>)params.get("county");
 		String sphereStr="", gradeStr="";
 		if(sphere != null && sphere.size()>0){
 			for(String item:sphere){
-				sphereStr+="'"+item+"',";
+				if(item.length()<=4){
+					sphereStr+="'"+item+"',";
+				}else {
+					logger.error("查询公司信息参数异常，sphereStr为："+item);
+				}
 			}
 			sphereStr = "".equals(sphereStr)?"":sphereStr.substring(0, sphereStr.length()-1);
 		}
 		if(grade != null && grade.size()>0){
 			for(String item:grade){
-				gradeStr+="'"+item+"',";
+				if(item.length()<=4){
+					gradeStr+="'"+item+"',";
+				}else {
+					logger.error("查询公司信息参数异常，gradeStr为："+item);
+				}
 			}
 			gradeStr = "".equals(gradeStr)?"":gradeStr.substring(0, gradeStr.length()-1);
 		}
@@ -57,6 +71,48 @@ public class CompanyDaoImpl implements CompanyDao{
 					+ "SELECT distinct CompanyID  from t_company_grade where GradeID in("+gradeStr+") "
 					+ ")");
 		}
+		if(age!=null &&age.size()>0 ){
+			String agestr = " and ( ";
+			for(String item:age){
+				if(item.length()<=3){
+					agestr+=" (com.BeginAge<="+item+" and com.EndAge>="+item+") or";
+				}else {
+					logger.error("查询公司信息参数异常，年龄为："+item);
+				}
+			}
+			sb.append(agestr.substring(0, agestr.length()-2)+") ");
+		}
+		if(county!=null &&county.size()>0 ){
+			String countystr = " and com.County in ( ";
+			for(String item :county){
+				if(item.length()<=3){
+					countystr+="'"+item+"',";
+				}else {
+					logger.error("查询公司信息参数异常，区县为："+item);
+				}
+			}
+			sb.append(countystr.substring(0, countystr.length()-1)+")");
+		}
+		String order="";
+		if("0".equals(params.get("ageOrder")) ){//年龄升序
+			order= " order by com.BeginAge asc ";
+		}else if("1".equals(params.get("ageOrder")) ){
+			order= " order by com.BeginAge desc ";
+		}
+		if("0".equals(params.get("viewOrder")) ){//点击量升序
+			if(order==""){
+				order= " order by com.VisitNum asc ";
+			}else {
+				order+= " ,com.VisitNum asc ";
+			}
+		}else if("1".equals(params.get("viewOrder")) ){
+			if(order==""){
+				order= " order by com.VisitNum desc ";
+			}else {
+				order+= " ,com.VisitNum desc ";
+			}
+		}
+		sb.append(order);
 		sb.append(" LIMIT :sl,:line ");
 		Query query = sessionFactory.getCurrentSession().createSQLQuery(sb.toString())
 				.setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP);

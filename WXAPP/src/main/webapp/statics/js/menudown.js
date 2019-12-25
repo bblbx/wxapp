@@ -31,6 +31,7 @@ $(function(){
 			$(this).parents(".select_textul").siblings(".select_textdiv").find("input").val(choose);
 			$(this).parents(".select_textul").fadeOut(100);
 			$(this).parents(".select_textul").siblings(".select_textdiv").find("input").trigger("change");
+			$(".select_textdiv").removeClass("divfocus");
         }else{
         	$(".select_second_ul").hide();
 		    $(this).siblings(".select_second_ul").show();
