@@ -28,8 +28,9 @@ $(function(){
         	
         	var choose = $(this).text();
 			$(this).parents(".select_textul").siblings(".select_textdiv").find(".s_text").text(choose);
-			$(this).parents(".select_textul").siblings("input").val(choose);
+			$(this).parents(".select_textul").siblings(".select_textdiv").find("input").val(choose);
 			$(this).parents(".select_textul").fadeOut(100);
+			$(this).parents(".select_textul").siblings(".select_textdiv").find("input").trigger("change");
         }else{
         	$(".select_second_ul").hide();
 		    $(this).siblings(".select_second_ul").show();
@@ -45,10 +46,11 @@ $(function(){
 			var choose = $(this).text();
 			$(this).addClass("focusli").siblings("li").removeClass("focusli");
 			$(this).parents(".select_textul").siblings(".select_textdiv").find(".s_text").text(choose);
-			$(this).parents(".select_textul").siblings("input").val(choose);
+			$(this).parents(".select_textul").siblings(".select_textdiv").find("input").val(choose);
 			$(this).parents(".select_textul").fadeOut(100);
 			
 			event.stopPropagation();
+			$(this).parents(".select_textul").siblings(".select_textdiv").find("input").trigger("change");
 		});
 	}
     $(".shaixuan_textdiv").click(function(){

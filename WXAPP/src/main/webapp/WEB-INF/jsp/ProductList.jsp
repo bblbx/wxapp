@@ -10,9 +10,9 @@
 	<meta content="black" name="apple-mobile-web-app-status-bar-style">
 	<meta content="telephone=no" name="format-detection">
 	 <script type="text/javascript" src="../statics/js/jquery-3.2.1.min.js"></script>
-	 <script type="text/javascript" src="../statics/js/menudown.js"></script>
+	 <script type="text/javascript" src="../statics/js/menudown.js?v=11"></script>
 	 <script type="text/javascript" src="../statics/js/common.js"></script>
-	 <link href="../statics/css/productlist.css" rel="stylesheet" type="text/css">
+	 <link href="../statics/css/common.css?v=1" rel="stylesheet" type="text/css">
 	 <link href="../statics/css/menudown.css" rel="stylesheet" type="text/css">
 
 </head>
@@ -22,7 +22,7 @@
 	<dt>
 		<div class="selectlist">
 			<div class="select_textdiv">
-				<input type="hidden" value=""/>
+				<input type="hidden" value="年龄升序" name="ageOrder"/>
 				<p class="s_text">年龄升序</p><span class="down"><img src="../statics/img/down.png"></span>
 			</div>
 			<div class="select_textul">
@@ -40,7 +40,7 @@
 		<dt>
 		<div class="selectlist">
 			<div class="select_textdiv">
-				<input type="hidden" value=""/>
+				<input type="hidden" value="" name="viewOrder"/>
 				<p class="s_text">点击量</p><span class="down"><img src="../statics/img/down.png"></span>
 			</div>
 			<div class="select_textul">
@@ -63,6 +63,7 @@
 			</div>
 			<div class="shaixuan_paneldiv">
 			<div class="shaixuan_panelcont">
+			<input type="checkbox" >
 						111 <br/>woshi <br/>woshi <br/>woshi <br/>woshi <br/>woshi <br/>
 			woshi <br/>woshi <br/>woshi <br/>woshi <br/>woshi <br/>woshi <br/>
 			woshi <br/>woshi <br/>woshi <br/>woshi <br/>woshi <br/>woshi <br/>
@@ -71,7 +72,6 @@
 			woshi <br/>woshi <br/>woshi <br/>woshi <br/>woshi <br/>woshi <br/>
 			woshi <br/>woshi <br/>woshi <br/>woshi <br/>woshi <br/>woshi333 <br/>
 			</div>
-
 			 <div class="footer-navBar" >
 			 <a>确定</a> <a>重置</a>
 			</div> 
@@ -82,7 +82,7 @@
 	<section class="jq22-scrollView">
 		<div class="jq22-limit-box" id="viewcompanydiv">
 		<c:forEach var="item"  items="${data}">
-			<a href="javascript:;" class="jq22-flex b-line">
+			<a href="../company/detail?id=${item['CompanyID']}&grade=${item['grade']}&sphere=${item['sphere']}" class="jq22-flex b-line">
 			<div class="jq22-flex-time-img">
 			<img src="${item['ImgUrl']}" alt="">
 			</div>
@@ -109,6 +109,17 @@
 </section>
 </body>
 <script type="text/javascript">
+$(document).ready(function(){
+	$("input[name=ageOrder]").on('change',function(){
+		alert(this.value+""+$("input[name=viewOrder]").val());
+	});
+	$("input[name=viewOrder]").on('change',function(){
+		alert(this.value+""+$("input[name=ageOrder]").val());
+	});
+})
+
+
+
 var page=2;
 var now=1;
 var winH = $(window).height(); //页面可视区域高度
@@ -134,7 +145,7 @@ $('section').scroll(function () {
 				if (serverData.success == 'true') {
 					if (serverData.msg.length > 0) {
 						for (var i = 0; i < serverData.msg.length; i++) {
-							var html = "<a href='javascript:;' class='jq22-flex b-line'>"+
+							var html = "<a href='../company/detail?id="+serverData.msg[i].CompanyID+"&grade=${grade}&sphere=${sphere}' class='jq22-flex b-line'>"+
 							"<div class='jq22-flex-time-img'>"+
 							"<img src='"+serverData.msg[i].ImgUrl+"' >"+
 							"</div>"+

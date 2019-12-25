@@ -14,6 +14,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.util.HtmlUtils;
 
 import cn.enncloud.service.CompanyService;
 import cn.enncloud.util.DataUtil;
@@ -53,4 +55,34 @@ public class CompanyController {
 		}
 		return res;
 	}
+	//显示公司明细
+	@SuppressWarnings("unchecked")
+	@RequestMapping("/detail")
+	@ResponseBody
+	public ModelAndView otherWeb(HttpServletRequest request, Model model) {
+		String companyid = request.getParameter("id");// 公司的id信息
+		String grade = request.getParameter("grade");// 请求的类型信息
+		String sphere = request.getParameter("sphere");// 请求的类型信息
+		String openid = request.getParameter("openid");
+		ModelAndView modelAndView = new ModelAndView("ProductDetail");
+		logger.info("查询公司明细，companyid="+companyid+",grade="+grade+",sphere="+sphere+",openid="+openid);
+		if(!DataUtil.IsNull(companyid)){
+			Map<String, Object> map = companyService.getCompanyCompleteInfoByID(companyid);
+			modelAndView.addAllObjects(map);
+			List<Map<String,Object>> orglist = (List<Map<String,Object>>)map.get("rich");
+			List<Map<String,Object>> richlist = new ArrayList<Map<String,Object>>();
+			if(orglist!=null){
+				for(Map<String,Object> item : orglist){
+					item.put("Text", HtmlUtils.htmlUnescape(item.get("Text").toString()));
+					richlist.add(item);
+				}
+			}
+			modelAndView.addObject("rich", richlist);
+			modelAndView.addObject("grade", grade);
+			modelAndView.addObject("sphere", sphere);
+		}
+		return modelAndView;
+	}
+	
+	
 }
