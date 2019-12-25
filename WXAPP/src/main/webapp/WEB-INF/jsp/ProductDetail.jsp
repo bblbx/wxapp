@@ -12,6 +12,7 @@
 	 <script type="text/javascript" src="../statics/js/jquery-3.2.1.min.js"></script>
 	 <script type="text/javascript" src="../statics/js/HappyImage.js"></script>
 	 <link href="../statics/css/common.css" rel="stylesheet" type="text/css">
+	 <link href="../statics/css/productlist.css"  rel="stylesheet" type="text/css">
 	 <style>
             .slide {
 				width:100%;
