@@ -12,51 +12,9 @@
 	 <script type="text/javascript" src="../statics/js/jquery-3.2.1.min.js"></script>
 	 <script type="text/javascript" src="../statics/js/HappyImage.js"></script>
 	 <link href="../statics/css/common.css" rel="stylesheet" type="text/css">
-	 <link href="../statics/css/productlist.css"  rel="stylesheet" type="text/css">
+	 <link href="../statics/css/productdetail.css"  rel="stylesheet" type="text/css">
 	 <style>
-            .slide {
-				width:100%;
-				height:200px;
-				overflow:hidden;
-				position:relative;
-				margin:0px auto;
-				
-			}
-			.slide img {
-				position:absolute;
-				top:0;
-				left:0;
-				width:100%;
-				height:100%;
-			}
-			.item{
-			font-size: 1rem;
-			}
-			.item .title{
-			width: 100%;
-			height: 2rem;
-			background-color: #aec9f1;
-			}
-			.item .title p{
-			padding:0.4rem 1rem;
-			color: blue;
-			font-weight: bold;
-			}
-			.item .content{
-			width: 100%;
-			padding: 0.3rem 0.3rem;
-			}
-			.foot{
-			background-color:#08acee;
-			text-align: center;
-			}
-			.foot div{
-			line-height:2.5rem;
-			width: 100%;
-			height:100%;
-			color: #000;
-			text-align: center;
-			}
+
         </style>
 </head>
 <body  >
