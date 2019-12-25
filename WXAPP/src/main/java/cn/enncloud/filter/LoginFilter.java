@@ -43,7 +43,8 @@ public class LoginFilter extends HttpServlet implements Filter {
     		  requestName.matches(".*\\.css$")||
     		  requestName.matches(".*\\.html$") ||
     		  requestName.matches(".*\\.jpg$")||
-    		  requestName.matches(".*\\.txt$")){ 
+    		  requestName.matches(".*\\.txt$")||
+    		  requestName.matches(".*\\.gif$")){ 
     	  chain.doFilter(request,response);  
           return;  
       }  

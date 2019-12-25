@@ -29,7 +29,7 @@
 			$("input[name=viewOrder]").on('change',function(){
 				submit();
 			});
-	 })
+	 });
 	 function getSelected(name){
 		 let ss = [];
 		 $('.selectbox[data-selectbox-name='+name+']').find("span").each(function() {
@@ -52,17 +52,19 @@
         postData.sphere=sphere;
         postData.openid=openid;
         postData.page='1';
+        addmask('jq22-scrollView');
         $.ajax({
             type : "POST",
             url : "../company/getcompanylist",
             data : postData,
             success : function(serverData) {
             	if (serverData.success == 'true') {
+            		$("#viewcompanydiv").html("");
  					if (serverData.msg.length > 0) {
  						for (var i = 0; i < serverData.msg.length; i++) {
- 							var html = "<a href='../company/detail?id="+serverData.msg[i].CompanyID+"&grade=${grade}&sphere=${sphere}' class='jq22-flex b-line'>"+
+ 							let temp = "<a href='../company/detail?id="+serverData.msg[i].CompanyID+"&grade="+grade+"&sphere="+sphere+"' class='jq22-flex b-line'>"+
  							"<div class='jq22-flex-time-img'>"+
- 							"<img src='"+serverData.msg[i].ImgUrl+"' >"+
+ 							(serverData.msg[i].ImgUrl==null?"<img >":"<img src='"+serverData.msg[i].ImgUrl+"' >")+
  							"</div>"+
  							"<div class='jq22-flex-box'>"+
  							"<h1>"+serverData.msg[i].SimpleName+"</h1>"+
@@ -80,7 +82,7 @@
  							"</div>"+
  							"</a><hr/>"
  							;
- 							$("#viewcompanydiv").html(html);
+ 							$("#viewcompanydiv").append(temp);
  						} 
  						if (serverData.msg.length < 20) {
  							hasall = true;//已经到底
@@ -91,11 +93,11 @@
  						hasall = true;//已经到底
  						$("#end").show();
  					}
- 					loadingHide();
+ 					removemask('jq22-scrollView');
  				} else {
  					hasall = true;//已经到底
  					$("#end").show();
- 					loadingHide();
+ 					removemask('jq22-scrollView');
  				}
             },
             error : function(e){
@@ -104,70 +106,3 @@
             }
         });
 	 }
-	 //滚动触发
-	 $('section').scroll(function () {
-	 	var pageH = $(document.body).height();
-	 	var scrollT = $(window).scrollTop(); //滚动条top
-	 	var aa = (pageH - winH - scrollT) / winH;
-	 	if (aa <= 0.01 && !hasall && page != now) {
-	 		now = page;
-	 		var postData = {};
-	        postData.age=ageArr+"";
-	        postData.county=county+"";
-	        postData.viewOrder=$("input[name=viewOrder]").val();
-	        postData.ageOrder=$("input[name=ageOrder]").val();
-	        postData.grade=grade;
-	        postData.sphere=sphere;
-	        postData.openid=openid;
-	        postData.page=page;
-	 		loadingShow('viewcompanydiv');
-	 		$.ajax({
-	 			type : 'POST',
-	 			url : "../company/getcompanylist",
-	 			data : postData,
-	 			success : function(serverData) {
-	 				if (serverData.success == 'true') {
-	 					if (serverData.msg.length > 0) {
-	 						for (var i = 0; i < serverData.msg.length; i++) {
-	 							var html = "<a href='../company/detail?id="+serverData.msg[i].CompanyID+"&grade=${grade}&sphere=${sphere}' class='jq22-flex b-line'>"+
-	 							"<div class='jq22-flex-time-img'>"+
-	 							"<img src='"+serverData.msg[i].ImgUrl+"' >"+
-	 							"</div>"+
-	 							"<div class='jq22-flex-box'>"+
-	 							"<h1>"+serverData.msg[i].SimpleName+"</h1>"+
-	 							"<div class='jq22-flex jq22-flex-clear-pa'>"+
-	 							"<div class='jq22-flex-box'>"+
-	 							"<div style='float: left;'>"+
-	 							"<h3>服务年龄:<font color='red'>"+serverData.msg[i].BeginAge+"-"+serverData.msg[i].EndAge+"岁</font></h3>"+
-	 							"</div>"+
-	 							"<div style='float: right;'>"+
-	 							"<h3>点击量:"+serverData.msg[i].VisitNum+"</h3>"+
-	 							"</div>"+
-	 							"</div>"+
-	 							"</div>"+
-	 							"<h2>主营项目:"+serverData.msg[i].MainBusiness+"</h2>"+
-	 							"</div>"+
-	 							"</a><hr/>"
-	 							;
-	 							$("#viewcompanydiv").append(html);
-	 						} 
-	 						if (serverData.msg.length < 10) {
-	 							hasall = true;//已经到底
-	 							$("#end").show();
-	 						}
-	 						page++;
-	 					} else {
-	 						hasall = true;//已经到底
-	 						$("#end").show();
-	 					}
-	 					loadingHide();
-	 				} else {
-	 					hasall = true;//已经到底
-	 					$("#end").show();
-	 					loadingHide();
-	 				}
-	 			},
-	 			dataType : "json"
-	 		});
-	 	}
-	 });

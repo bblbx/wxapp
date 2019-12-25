@@ -69,6 +69,7 @@ public class CompanyController {
 		params.put("county", countyList);
 		params.put("age", ageList);
 		params.put("openid", openid);
+		params.put("page", page);
 		logger.info("用户"+openid+"分页查询公司列表，params="+params);
 		List<Map<String,Object>> list = companyService.getCompanySimpleInfoList(params, Integer.parseInt(DataUtil.FillNull(page, "1").toString()), 20);
 		if(list !=null){
