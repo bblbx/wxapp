@@ -8,12 +8,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import cn.enncloud.util.CommonUtil;
-import cn.enncloud.util.PropertyUtil;
+import cn.enncloud.util.PropertyConstants;
 
 public class SignUtil {
 	private static final Logger logger = LoggerFactory.getLogger(SignUtil.class);
     // 与接口配置信息中的Token要一致
-    private static String token = PropertyUtil.getProperty("weixin.token","");
+    private static String token = PropertyConstants.Token;
     /**
      * 
      * @Description: 验证签名

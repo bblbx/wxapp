@@ -26,8 +26,8 @@ public class TokenDaoImpl implements TokenDao{
 	@Override
 	public Boolean queryIsTokenTimeout(Integer minutes, String appId) {
 		Boolean istimeout = true;
-		StringBuffer str=new StringBuffer("select count(1) as Count from W_Token t ");
-		str.append(" where (t.CreateTime<DATEADD(minute,:minutes,GETDATE()) OR t.CreateTime is null) AND t.AppId=:appId");
+		StringBuffer str=new StringBuffer("select count(1) as Count from t_token t ");
+		str.append(" where (t.CreateDate<date_add(NOW(),interval :minutes minute) OR t.CreateDate is null) AND t.AppId=:appId");
 		SQLQuery query = sessionFactory.getCurrentSession().createSQLQuery(str.toString());
 		query.setInteger("minutes", minutes);
 		query.setString("appId", appId);
@@ -45,10 +45,10 @@ public class TokenDaoImpl implements TokenDao{
 		}
 		
 		String uuid = UUID.randomUUID().toString().replaceAll("-", "");
-		String sqlHistory = "INSERT INTO W_TokenHistory (guid,access_token,expires_in,CreateTime,AppId) VALUES(:uuid,:access_token,:expires_in,getdate(),:appId);";
-		String sql = "INSERT INTO W_Token (guid,access_token,expires_in,CreateTime,AppId) VALUES(:uuid,:access_token,:expires_in,getdate(),:appId);";
+		String sqlHistory = "INSERT INTO t_token_history (GUID,AccessToken,ExpiresIn,CreateDate,AppId) VALUES(:uuid,:access_token,:expires_in,NOW(),:appId);";
+		String sql = "INSERT INTO t_token (GUID,AccessToken,ExpiresIn,CreateDate,AppId) VALUES(:uuid,:access_token,:expires_in,NOW(),:appId);";
 		//先删除
-		String sqldel ="DELETE FROM W_Token WHERE AppId=:appId";
+		String sqldel ="DELETE FROM t_token WHERE AppId=:appId";
 		Query query=sessionFactory.getCurrentSession().createSQLQuery(sqldel);
 		query.setString("appId", appId);
 		query.executeUpdate();
@@ -71,10 +71,10 @@ public class TokenDaoImpl implements TokenDao{
 	
 	@Override
 	public String getLatestToken(String appId) {
-		String sql = "select top 1 t.access_token from W_Token t with(nolock) where t.AppId=:appId order by t.CreateTime desc";
+		String sql = "select t.AccessToken from t_token t where t.AppId=:appId order by t.CreateDate desc LIMIT 1";
 		SQLQuery query = sessionFactory.getCurrentSession().createSQLQuery(sql);
 		query.setString("appId", appId);
-		String access_token = (String) query.addScalar("access_token", StandardBasicTypes.STRING).uniqueResult();
+		String access_token = (String) query.addScalar("AccessToken", StandardBasicTypes.STRING).uniqueResult();
 		log.info("根据APPID("+appId+")查询最新token:"+access_token);
 		return access_token;
 	}
