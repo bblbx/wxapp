@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration status="OFF" monitorInterval="3600">  
+	
+    <properties>
+    	<property name="LOG_HOME">${sys:catalina.home}/logs_wxapp</property>
+    	<property name="outputLayout">[%d{yyyy-MM-dd HH:mm:ss.SSS}][%-5p][%t][%c{5}:%L] - %m%n</property>
+  	</properties>
+	  
+    <appenders>
+  		<Console name="consoleAppender" target="SYSTEM_OUT">
+           	<ThresholdFilter level="debug" onMatch="ACCEPT" onMismatch="DENY" /> 
+            <PatternLayout pattern="${outputLayout}"/>
+        </Console>
+         
+      	<RollingFile name="rollingFileAppender" fileName="${LOG_HOME}/info.log"  filePattern="${LOG_HOME}/info.log.%d{yyyy-MM-dd}_%i.log" >
+            <ThresholdFilter level="debug" onMatch="ACCEPT" onMismatch="DENY" />
+            <PatternLayout pattern="${outputLayout}" />
+            <Policies>
+            	<OnStartupTriggeringPolicy /> 
+              	<TimeBasedTriggeringPolicy interval="1" modulate="true" />
+                <SizeBasedTriggeringPolicy size="20 MB" /> 
+            </Policies>
+            <DefaultRolloverStrategy max="50"/>
+        </RollingFile>
+    </appenders>
+    
+    <loggers>
+        <!-- 第三方日志系统 -->
+        <logger name="org.springframework" level="info" additivity="false"/>
+        <logger name="org.hibernate" level="info" additivity="false"/>
+      	
+        <root level="debug">
+       	    <appender-ref ref="consoleAppender"/>
+       	    <appender-ref ref="rollingFileAppender"/>
+        </root>
+    </loggers>
+</configuration>
