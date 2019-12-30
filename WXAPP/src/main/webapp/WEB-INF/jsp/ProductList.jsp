@@ -67,7 +67,7 @@
 			<div class="shaixuan_panelcont" style="z-index: 10;">
 			<div class="selectbox" data-selectbox-name="age">
 				<div class="title">
-				<span>我是title</span>
+				<span>年龄</span>
 				</div>
 				<div class="content" style="text-align: center;">
 				<c:forEach var="item" begin="0"  end="17">
@@ -77,7 +77,7 @@
 			</div>
 			<div class="selectbox" data-selectbox-name="county">
 				<div class="title">
-				<span>我是title2</span>
+				<span>区县</span>
 				</div>
 				<div class="content" style="text-align: center;">
 				<c:forEach var="item" items="${county}">
