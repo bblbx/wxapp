@@ -20,6 +20,7 @@ import com.alibaba.fastjson.JSONObject;
 
 import cn.enncloud.service.CommonService;
 import cn.enncloud.service.CompanyService;
+import cn.enncloud.service.WXUserService;
 import cn.enncloud.util.DataUtil;
 import cn.enncloud.util.PropertyConstants;
 import cn.enncloud.wx.util.WXUtil;
@@ -40,6 +41,8 @@ public class ServletController {
 	private CompanyService companyService;
 	@Autowired
 	private CommonService commonService;
+	@Autowired
+	private WXUserService userService;
 	// 根据点击公众号中菜单的不同进行不同的业务操作
 	@RequestMapping("/webhome")
 	@ResponseBody
@@ -59,7 +62,9 @@ public class ServletController {
 			openid = jsonObject.getString("openid");
 		}
 		log.info("用户openid:" + openid);
-
+		//保存用户信息
+		userService.saveUserInfo(openid);
+		userService.saveVisitInfo(openid, "",PropertyConstants.VisitType.System);
 		if (openid == null || openid.equals("")) {
 			return new ModelAndView("weihu");
 		}

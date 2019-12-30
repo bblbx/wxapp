@@ -18,7 +18,9 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.util.HtmlUtils;
 
 import cn.enncloud.service.CompanyService;
+import cn.enncloud.service.WXUserService;
 import cn.enncloud.util.DataUtil;
+import cn.enncloud.util.PropertyConstants;
 
 @RestController
 @RequestMapping("/company")
@@ -26,7 +28,9 @@ public class CompanyController {
 	private static final Logger logger = LoggerFactory.getLogger(ServletController.class);
 	@Autowired
 	private CompanyService companyService;
-	
+
+	@Autowired
+	private WXUserService userService;
 	@RequestMapping("/getcompanylist")
     @ResponseBody
 	public Map<String,Object> getCompanyList(HttpServletRequest request, Model model){
@@ -90,6 +94,8 @@ public class CompanyController {
 		ModelAndView modelAndView = new ModelAndView("ProductDetail");
 		logger.info("查询公司明细，companyid="+companyid+",grade="+grade+",sphere="+sphere+",openid="+openid);
 		if(!DataUtil.IsNull(companyid)){
+			//保存用户访问信息
+			userService.saveVisitInfo(openid, companyid,PropertyConstants.VisitType.Company);
 			Map<String, Object> map = companyService.getCompanyCompleteInfoByID(companyid);
 			modelAndView.addAllObjects(map);
 			List<Map<String,Object>> orglist = (List<Map<String,Object>>)map.get("rich");

@@ -12,6 +12,23 @@ import org.springframework.stereotype.Component;
 @Component
 public class PropertyConstants {
 	/**
+	 * 用户访问类型
+	 * @Description: 
+	 * @author: liubaoxun
+	 * @create: 2019年12月30日上午11:11:59
+	 */
+	public interface VisitType {
+		/**
+		 * 访问系统
+		 */
+		String System = "01";
+		
+		/**
+		 * 访问公司
+		 */
+		String Company = "02";
+	}
+	/**
 	 * 允许直接访问的白名单页面
 	 */
 	public static String WhitePath="";
