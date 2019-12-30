@@ -336,9 +336,8 @@
 	border-radius:0.3rem;
 	 }
 	.content > span.active {
-		color: #81B1FF;
-		border: .01rem solid #81B1FF;
-		color:#fe6604a8;
+		color:#FFF;
+		background-color:#fe6604a8;
 		border: .01rem solid #fe2704a8;
 	}
 	.shaixuan_paneldiv .shade{

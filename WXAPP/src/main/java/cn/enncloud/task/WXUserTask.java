@@ -31,7 +31,7 @@ public class WXUserTask {
 	 * @create: 2019年12月30日上午11:24:25
 	 * @update: 2019年12月30日上午11:24:25 void
 	 */
-	@Scheduled(cron="0 0 0 * * ? *")
+	@Scheduled(cron="0 0 1 * * ?")
 	public void deleteVisitInfo(){
 		if(!ActiveIpUtil.isActiveQuartzServer()){
 			logger.info("删除用户的访问数据,非定时任务激活服务器！");
