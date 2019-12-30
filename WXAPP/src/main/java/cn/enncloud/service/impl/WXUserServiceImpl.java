@@ -17,7 +17,7 @@ public class WXUserServiceImpl implements WXUserService{
 	private WXUserDao userDao;
 	@Override
 	public Boolean saveUserInfo(String openID) {
-		logger.info("保存用户openid");
+		logger.info("保存用户openid"+openID);
 		return userDao.saveUserInfo(openID);
 	}
 

@@ -9,17 +9,17 @@ import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.hibernate.transform.Transformers;
 import org.hibernate.type.StandardBasicTypes;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import com.alibaba.fastjson.JSONObject;
 
 import cn.enncloud.dao.OperatorDao;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @Service
 public class OperatorDaoImpl implements OperatorDao {
-	
+	private static final Logger logger = LoggerFactory.getLogger(OperatorDaoImpl.class);
 	private SessionFactory sessionFactory; 
 	
 	@Resource(name = "sessionFactory")
@@ -47,7 +47,7 @@ public class OperatorDaoImpl implements OperatorDao {
 				userNames += "," + userName;
 			}
 		}
-		log.info("根据用户OpenID:"+openId + ",查询用户:"+userNames);
+		logger.info("根据用户OpenID:"+openId + ",查询用户:"+userNames);
 		return userNames;
 	}
 
@@ -60,7 +60,7 @@ public class OperatorDaoImpl implements OperatorDao {
 		Query query = sessionFactory.getCurrentSession().createSQLQuery(sql).addScalar("OpenID", StandardBasicTypes.STRING);
 		query.setString("UserName", operatorId);
 		String openId = (String) query.uniqueResult();
-		log.info("根据用户:"+operatorId + ",查询微信OpenId:"+openId);
+		logger.info("根据用户:"+operatorId + ",查询微信OpenId:"+openId);
 		return openId;
 	}
 	
@@ -73,7 +73,7 @@ public class OperatorDaoImpl implements OperatorDao {
 		Query query = sessionFactory.getCurrentSession().createSQLQuery(sql).addScalar("OpenID", StandardBasicTypes.STRING);
 		query.setInteger("UserID", id);
 		String openId = (String) query.uniqueResult();
-		log.info("根据用户:"+id + ",查询微信OpenId:"+openId);
+		logger.info("根据用户:"+id + ",查询微信OpenId:"+openId);
 		return openId;
 	}
 	
@@ -92,7 +92,7 @@ public class OperatorDaoImpl implements OperatorDao {
 			Map map = (Map) list.get(i);
 			userID = (Integer) map.get("UserID");	
 		}
-		log.info("根据用户OpenID:"+openId + ",查询用户ID:"+userID);
+		logger.info("根据用户OpenID:"+openId + ",查询用户ID:"+userID);
 		return userID;
 	}
 	
@@ -109,7 +109,7 @@ public class OperatorDaoImpl implements OperatorDao {
 		query.setString("UserName", operatorId);
 		int extresult = query.executeUpdate();
 		sessionFactory.getCurrentSession().flush();
-		log.info("更新微信绑定信息("+jsonObject+"),结果:"+extresult);
+		logger.info("更新微信绑定信息("+jsonObject+"),结果:"+extresult);
 		if(extresult>0){
 			msg = "该微信与账号("+operatorId+")绑定成功。";
 		} else {

@@ -40,12 +40,14 @@ public class WXUserDaoImpl implements WXUserDao{
 		query.setString("id", uid);
 		query.setString("openID", openID);
 		query.setString("companyID", companyID);
+		query.setString("visitType", visitType);
 		query.executeUpdate();
 		
 		query = sessionFactory.getCurrentSession().createSQLQuery(sqlh);
 		query.setString("id", uid);
 		query.setString("openID", openID);
 		query.setString("companyID", companyID);
+		query.setString("visitType", visitType);
 		query.executeUpdate();
 		
 		return true;

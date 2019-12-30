@@ -1,5 +1,7 @@
 package cn.enncloud.service.impl;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -7,11 +9,10 @@ import com.alibaba.fastjson.JSONObject;
 
 import cn.enncloud.dao.OperatorDao;
 import cn.enncloud.service.OperatorService;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @Service
 public class OperatorServiceImpl implements OperatorService {
+	private static final Logger logger = LoggerFactory.getLogger(OperatorServiceImpl.class);
 	
 	@Autowired
 	private OperatorDao operatorDao;
@@ -19,7 +20,7 @@ public class OperatorServiceImpl implements OperatorService {
 	@Override
 	public String relateWeixinAccount2Operator(JSONObject jsonObject) {
 		String msg = null;
-		log.info("绑定微信账号,传入参数:"+jsonObject);
+		logger.info("绑定微信账号,传入参数:"+jsonObject);
 		String openid = jsonObject.getString("openId");
 		String operatorid = jsonObject.getString("operatorId");
 		
@@ -37,7 +38,7 @@ public class OperatorServiceImpl implements OperatorService {
 				msg = operatorDao.updateWeixinAccount2Operator(jsonObject);
 			}
 		}
-		log.info("绑定微信账号,结果:"+msg);
+		logger.info("绑定微信账号,结果:"+msg);
 		return msg;
 	}
 }

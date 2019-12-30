@@ -10,15 +10,14 @@ import javax.annotation.Resource;
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.hibernate.transform.Transformers;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-
 import cn.enncloud.dao.FunctionDao;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @Service
 public class FunctionDaoImpl implements FunctionDao {
-	
+	private static final Logger logger = LoggerFactory.getLogger(FunctionDaoImpl.class);
 	private SessionFactory sessionFactory; 
 	@Resource(name = "sessionFactory")
 	public void setSessionFactory(SessionFactory sessionFactory) {
@@ -77,7 +76,7 @@ public class FunctionDaoImpl implements FunctionDao {
 				functionMap.put(parentName, functionList);
 			}
 		}
-		log.info("根据用户OpenID查询微信功能列表:"+openId + ",结果:"+functionMap);
+		logger.info("根据用户OpenID查询微信功能列表:"+openId + ",结果:"+functionMap);
 		return functionMap;
 	}
 }

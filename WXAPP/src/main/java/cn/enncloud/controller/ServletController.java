@@ -1,6 +1,7 @@
 package cn.enncloud.controller;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,7 +25,6 @@ import cn.enncloud.service.WXUserService;
 import cn.enncloud.util.DataUtil;
 import cn.enncloud.util.PropertyConstants;
 import cn.enncloud.wx.util.WXUtil;
-import lombok.extern.slf4j.Slf4j;
 
 /**
  * 
@@ -32,7 +32,6 @@ import lombok.extern.slf4j.Slf4j;
  * @author: liubaoxun
  * @create: 2018年2月13日下午10:03:54
  */
-@Slf4j
 @RestController
 @RequestMapping("/servlet")
 public class ServletController {
@@ -51,31 +50,29 @@ public class ServletController {
 		String sphere = request.getParameter("s");// 领域
 		String grade = request.getParameter("g");// 级别
 		String code = request.getParameter("code");
-		String openid = request.getParameter("openid");
+		String openid = "";//request.getParameter("openid");
 		if (openid == null || "".equals(openid)) {
 			// 调用接口获取openid
 			String url = "https://api.weixin.qq.com/sns/oauth2/access_token";
 			String data = "appid=" + PropertyConstants.APPID + "&secret=" + PropertyConstants.APPSECRET + "&code=" + code
 					+ "&grant_type=authorization_code";
 			JSONObject jsonObject = WXUtil.httpsRequest(url, "POST", data);
-			log.info("用户jsonObject:" + jsonObject);
+			logger.info("用户jsonObject:" + jsonObject);
 			openid = jsonObject.getString("openid");
 		}
-		log.info("用户openid:" + openid);
-		//保存用户信息
-		userService.saveUserInfo(openid);
-		userService.saveVisitInfo(openid, "",PropertyConstants.VisitType.System);
+		logger.info("用户openid:" + openid);
+		
 		if (openid == null || openid.equals("")) {
 			return new ModelAndView("weihu");
 		}
-
+		//保存用户信息。如果同步保存则时间较长，早晨微信再次回调该页面，从而无法获取openid
+		new MyThread(userService,openid).start();
 		if (PropertyConstants.TEST_ENV) {
 			if (!PropertyConstants.TestAllowOpenId.contains(openid)) {
-				log.info("限制访问" + openid);
+				logger.info("限制访问" + openid);
 				return new ModelAndView("weihu");
 			}
 		}
-
 		ModelAndView modelAndView = null;
 		if ("other".equals(requestpage)) {
 			modelAndView = new ModelAndView(new RedirectView("../servlet/otherweb"));
@@ -88,7 +85,9 @@ public class ServletController {
 		}
 		return modelAndView;
 	}
-
+public void test(String openid){
+	
+}
 	/**
 	 * 跳转到'其他'页面主页
 	 * @Description:

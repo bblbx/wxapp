@@ -3,6 +3,8 @@ package cn.enncloud.service.impl;
 import java.util.Iterator;
 import java.util.Map.Entry;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,12 +14,10 @@ import cn.enncloud.dao.TokenDao;
 import cn.enncloud.service.WXService;
 import cn.enncloud.util.HttpSender;
 import cn.enncloud.util.PropertyConstants;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @Service
 public class WXServiceImpl implements WXService{
-	
+	private static final Logger logger = LoggerFactory.getLogger(WXServiceImpl.class);
 	@Autowired
 	private TokenDao tokenDao;
 	
@@ -56,14 +56,14 @@ public class WXServiceImpl implements WXService{
 		}
 		sendJson.put("data", dataJson);
 		
-		log.info("向用户发送模板消息:"+sendJson);
+		logger.info("向用户发送模板消息:"+sendJson);
 		try {
 			String sendResult = HttpSender.getInstance().sendPostRequest(url, sendJson.toJSONString(), 6000, 8000);
-			log.info("向用户发送模板消息,返回信息:"+sendResult);
+			logger.info("向用户发送模板消息,返回信息:"+sendResult);
 			//此处可以将微信返回结果保存到数据库中
 			//JSONObject sendResultJson = JSONObject.parseObject(sendResult); 
 		} catch (Exception e) {
-			log.error(e.getMessage(),e);
+			logger.error(e.getMessage(),e);
 			e.printStackTrace();
 		}
 	}

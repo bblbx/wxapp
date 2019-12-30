@@ -2,15 +2,16 @@ package cn.enncloud.service.impl;
 
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import cn.enncloud.service.CoreService;
 import cn.enncloud.wx.util.MessageUtil;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @Service
 public class CoreServiceImpl implements CoreService {
+	private static final Logger logger = LoggerFactory.getLogger(CoreServiceImpl.class);
 	/**
 	 * 
 	 * @Description: 处理微信发送的消息
@@ -29,7 +30,7 @@ public class CoreServiceImpl implements CoreService {
 		//输出数据
 		for (Map.Entry<String,String> entry : xmlMap.entrySet()) {  
 			System.out.println(entry.getKey() + " = " + entry.getValue());  
-			log.info(entry.getKey() + " = " + entry.getValue());
+			logger.info(entry.getKey() + " = " + entry.getValue());
 		}
 		
 		return null;

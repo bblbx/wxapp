@@ -8,15 +8,15 @@ import org.hibernate.Query;
 import org.hibernate.SQLQuery;
 import org.hibernate.SessionFactory;
 import org.hibernate.type.StandardBasicTypes;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import cn.enncloud.dao.TokenDao;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @Repository
 public class TokenDaoImpl implements TokenDao{
-	
+	private static final Logger logger = LoggerFactory.getLogger(TokenDaoImpl.class);
 	private SessionFactory sessionFactory; 
 	@Resource(name = "sessionFactory")
 	public void setSessionFactory(SessionFactory sessionFactory) {
@@ -75,7 +75,7 @@ public class TokenDaoImpl implements TokenDao{
 		SQLQuery query = sessionFactory.getCurrentSession().createSQLQuery(sql);
 		query.setString("appId", appId);
 		String access_token = (String) query.addScalar("AccessToken", StandardBasicTypes.STRING).uniqueResult();
-		log.info("根据APPID("+appId+")查询最新token:"+access_token);
+		logger.info("根据APPID("+appId+")查询最新token:"+access_token);
 		return access_token;
 	}
 }
