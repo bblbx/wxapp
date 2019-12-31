@@ -203,7 +203,7 @@ $('.jq22-scrollView').scroll(function () {
 
 
 wx.config({
-    debug: true,
+    debug: false,
     appId: "${appId }",
     timestamp: "${timeStamp }",
     nonceStr: "${nonceStr }",

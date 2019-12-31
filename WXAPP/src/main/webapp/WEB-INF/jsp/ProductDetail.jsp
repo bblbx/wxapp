@@ -13,9 +13,7 @@
 	 <script type="text/javascript" src="../statics/js/HappyImage.js"></script>
 	 <link href="../statics/css/common.css" rel="stylesheet" type="text/css">
 	 <link href="../statics/css/productdetail.css"  rel="stylesheet" type="text/css">
-	 <style>
-
-        </style>
+	 	 <script src="http://res.wx.qq.com/open/js/jweixin-1.4.0.js"></script>
 </head>
 <body  >
 <div class="jq22-flexView">
@@ -122,5 +120,22 @@
             dotAlign: "center",
             autoplay: 0,
             onChange: a.noop*/
+            wx.config({
+                debug: false,
+                appId: "${appId }",
+                timestamp: "${timeStamp }",
+                nonceStr: "${nonceStr }",
+                signature: "${signature }",
+                jsApiList: [
+            	'hideMenuItems'
+                ]
+            });
+            wx.ready(function(){
+            	wx.hideMenuItems({
+            		  menuList: ['menuItem:editTag','menuItem:delete','menuItem:copyUrl',
+            		             'menuItem:originPage','menuItem:readMode','menuItem:openWithQQBrowser',
+            		             'menuItem:openWithSafari','menuItem:share:email','menuItem:share:brand'] // 要隐藏的菜单项，只能隐藏“传播类”和“保护类”按钮，所有menu项见附录3
+            	});
+            });
         </script>
 </html>

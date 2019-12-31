@@ -90,9 +90,6 @@ public class ServletController {
 		}
 		return modelAndView;
 	}
-public void test(String openid){
-	
-}
 	/**
 	 * 跳转到'其他'页面主页
 	 * @Description:
