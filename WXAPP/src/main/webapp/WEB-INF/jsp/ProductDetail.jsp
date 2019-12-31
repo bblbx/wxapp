@@ -19,8 +19,8 @@
 </head>
 <body  >
 <div class="jq22-flexView">
-<header class="jq22-navBar">
-<a href="../servlet/otherweb?grade=${grade}&openid=${openid}&sphere=${sphere}" class="jq22-navBar-item">
+<header class="jq22-navBar" >
+<a href="../servlet/otherweb?grade=${grade}&openid=${openid}&sphere=${sphere}&openid=${openid}" class="jq22-navBar-item">
 <i class="icon icon-return"></i>
 </a>
 <div class="jq22-center">

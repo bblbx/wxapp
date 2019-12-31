@@ -97,7 +97,7 @@
 	<div class="jq22-scrollView" id="jq22-scrollView">
 		<div class="jq22-limit-box" id="viewcompanydiv">
 		<c:forEach var="item"  items="${data}">
-			<a href="../company/detail?id=${item['CompanyID']}&grade=${item['grade']}&sphere=${item['sphere']}" class="jq22-flex b-line">
+			<a href="../company/detail?id=${item['CompanyID']}&grade=${item['grade']}&sphere=${item['sphere']}&openid=${openid}" class="jq22-flex b-line">
 			<div class="jq22-flex-time-img">
 			<img src="${item['ImgUrl']}" alt="">
 			</div>
@@ -124,7 +124,7 @@
 </section>
 </body>
 <script type="text/javascript">
-var sphere = '${sphere}',grade='${grade}',openid='${openid}',openid= "${openid}";
+var sphere = '${sphere}',grade='${grade}',openid='${openid}';
 var ageArr =[],county=[];
 var page=2;
 var now=1;
@@ -157,7 +157,7 @@ $('.jq22-scrollView').scroll(function () {
 				if (serverData.success == 'true') {
 					if (serverData.msg.length > 0) {
 						for (var i = 0; i < serverData.msg.length; i++) {
-							var html = "<a href='../company/detail?id="+serverData.msg[i].CompanyID+"&grade=${grade}&sphere=${sphere}' class='jq22-flex b-line'>"+
+							var html = "<a href='../company/detail?id="+serverData.msg[i].CompanyID+"&grade=${grade}&sphere=${sphere}&openid=${openid}' class='jq22-flex b-line'>"+
 							"<div class='jq22-flex-time-img'>"+
 							"<img src='"+serverData.msg[i].ImgUrl+"' >"+
 							"</div>"+
