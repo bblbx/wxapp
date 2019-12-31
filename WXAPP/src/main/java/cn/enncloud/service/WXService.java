@@ -4,15 +4,17 @@ import com.alibaba.fastjson.JSONObject;
 
 public interface WXService {
 	/**
-	 * @Description:  查询token是否过期
-	 * @author: Davin
-	 * @create: 2019年6月21日下午3:00:08
-	 * @update: 2019年6月21日下午3:00:08
+	 * 查询token是否过期
+	 * @Description: 
+	 * @author: liubaoxun
+	 * @create: 2019年12月31日下午4:18:18
+	 * @update: 2019年12月31日下午4:18:18
 	 * @param minutes
 	 * @param appId
+	 * @param type 01token 02ticket
 	 * @return Boolean
 	 */
-	public Boolean queryIsTokenTimeout(Integer minutes,String appId);
+	public Boolean queryIsTokenTimeout(Integer minutes,String appId,String type);
 	
 	/**
 	 * @Description: 保存Token
@@ -24,7 +26,7 @@ public interface WXService {
 	 * @param appId
 	 * @return boolean
 	 */
-	public boolean saveToken(String accessToken,String expiresIn, String appId);
+	public boolean saveToken(String accessToken,String expiresIn, String appId,String type);
 	
 	/**
 	 * @Description: 查询最新的token 
@@ -34,7 +36,7 @@ public interface WXService {
 	 * @param appId
 	 * @return String
 	 */
-	public String getLatestToken(String appId);
+	public String getLatestToken(String appId,String type);
 	
 	/**
 	 * @Description: 向用户发送模板消息

@@ -21,9 +21,12 @@ import com.alibaba.fastjson.JSONObject;
 
 import cn.enncloud.service.CommonService;
 import cn.enncloud.service.CompanyService;
+import cn.enncloud.service.WXService;
 import cn.enncloud.service.WXUserService;
 import cn.enncloud.util.DataUtil;
 import cn.enncloud.util.PropertyConstants;
+import cn.enncloud.util.WXPayUtil;
+import cn.enncloud.wx.util.SignUtil;
 import cn.enncloud.wx.util.WXUtil;
 
 /**
@@ -42,6 +45,8 @@ public class ServletController {
 	private CommonService commonService;
 	@Autowired
 	private WXUserService userService;
+	@Autowired
+	private WXService wxService;
 	// 根据点击公众号中菜单的不同进行不同的业务操作
 	@RequestMapping("/webhome")
 	@ResponseBody
@@ -153,6 +158,27 @@ public void test(String openid){
 		modelAndView.addObject("openid", openid);
 		modelAndView.addObject("grade", grade);
 		modelAndView.addObject("sphere", sphere);
+		//获取js-sdk签名
+		String parms = request.getQueryString();
+		String timeStamp = WXPayUtil.getCurrentTimestamp()+"";
+		String nonceStr = WXPayUtil.generateNonceStr();
+		Map<String,String> signMap = new HashMap<String, String>();
+		signMap.put("appId", PropertyConstants.APPID);
+		signMap.put("timeStamp", timeStamp);
+		signMap.put("nonceStr", nonceStr);
+		String ticket =wxService.getLatestToken(PropertyConstants.APPID, "02");
+		StringBuffer dataBufer = new StringBuffer();
+		dataBufer.append("jsapi_ticket="+ticket)
+		.append("&noncestr="+nonceStr)
+		.append("&timestamp="+timeStamp)
+		.append("&url="+PropertyConstants.WEB_URL+"/"+PropertyConstants.WEB_PROJECT+"/servlet/otherweb?"+parms);
+		String signature =  SignUtil.generateTicketSignature(dataBufer.toString());
+		signMap.put("signature", signature);
+		modelAndView.addObject("appId", PropertyConstants.APPID);
+		modelAndView.addObject("timeStamp", timeStamp);
+		modelAndView.addObject("nonceStr", nonceStr);
+		modelAndView.addObject("signature", signature);
+		logger.info("生成签名参数：" + dataBufer.toString()+"对应签名"+signature);
 		return modelAndView;
 	}
 }

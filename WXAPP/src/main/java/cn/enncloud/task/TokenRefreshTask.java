@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import cn.enncloud.bean.Ticket;
 import cn.enncloud.bean.Token;
 import cn.enncloud.service.WXService;
 import cn.enncloud.util.ActiveIpUtil;
@@ -37,7 +38,7 @@ public class TokenRefreshTask {
 		}
 		logger.info("开始从微信获取token");
 		// 统计60分钟内是否有没更新过token的公司
-		boolean istimeout = wxService.queryIsTokenTimeout(-60, PropertyConstants.APPID);
+		boolean istimeout = wxService.queryIsTokenTimeout(-60, PropertyConstants.APPID,"01");
 		if (!istimeout) {
 			logger.info("微信无需重新获取token");
 			return;
@@ -50,7 +51,7 @@ public class TokenRefreshTask {
 			if (token != null) {
 				logger.info("从微信获取token" + token.getAccessToken());
 				// 保存信息
-				boolean res = wxService.saveToken(token.getAccessToken(), token.getExpiresIn(), PropertyConstants.APPID);
+				boolean res = wxService.saveToken(token.getAccessToken(), token.getExpiresIn(), PropertyConstants.APPID,"01");
 				if (res) {
 					logger.info("保存微信token成功");
 				} else {
@@ -62,5 +63,45 @@ public class TokenRefreshTask {
 		} catch (Exception e) {
 			logger.error("微信保存公司token异常",e);
 		}
+	}
+	//更新ticket
+	@Scheduled(fixedDelay=60*1000*10 , initialDelay=10000)
+	private void refreshCZTicket(){
+		if(!ActiveIpUtil.isActiveQuartzServer()){
+			logger.info("更新ticket,非定时任务激活服务器！");
+			return;
+		}
+		logger.info("开始从微信获取ticket");
+		// 统计60分钟内是否有没更新过token的公司
+		boolean istimeout = wxService.queryIsTokenTimeout(-60, PropertyConstants.APPID,"02");
+		if (!istimeout) {
+			logger.info("微信无需重新获取ticket");
+			return;
+		}
+		
+		try {
+			logger.info("微信获取公司ticket");
+			String token= wxService.getLatestToken(PropertyConstants.APPID,"01");
+		       
+			if(token==null || "".equals(token)){
+				logger.info("无法得到Token，获取jsapi_ticket失败");
+				return ;
+			}
+			Ticket ticket = TokenUtil.getTicket(token,"CZ");
+			logger.info("从微信获取jsapi_ticket"+ticket.getTicket());
+			//保存信息
+			boolean res = wxService.saveToken(ticket.getTicket(), ticket.getExpiresIn(), PropertyConstants.APPID,"02");
+			if (res) {
+				logger.info("保存jsapi_ticket成功");
+	
+			} else {
+				logger.info("保存jsapi_ticket失败");
+			  }
+			
+			
+		} catch (Exception e) {
+			logger.error("微信保存公司ticket异常",e);
+		}
+	
 	}
 }

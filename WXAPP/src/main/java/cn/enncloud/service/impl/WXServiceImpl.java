@@ -22,23 +22,23 @@ public class WXServiceImpl implements WXService{
 	private TokenDao tokenDao;
 	
 	@Override
-	public Boolean queryIsTokenTimeout(Integer minutes,String appId) {
-		return tokenDao.queryIsTokenTimeout(minutes, appId);
+	public Boolean queryIsTokenTimeout(Integer minutes,String appId,String type) {
+		return tokenDao.queryIsTokenTimeout(minutes, appId,type);
 	}
 	
 	@Override
-	public boolean saveToken(String accessToken, String expiresIn, String appId) {
-		return tokenDao.saveToken(accessToken, expiresIn, appId);
+	public boolean saveToken(String accessToken, String expiresIn, String appId,String type) {
+		return tokenDao.saveToken(accessToken, expiresIn, appId,type);
 	}
 
 	@Override
-	public String getLatestToken(String appId) {
-		return tokenDao.getLatestToken(appId);
+	public String getLatestToken(String appId,String type) {
+		return tokenDao.getLatestToken(appId,type);
 	}
 	
 	@Override
 	public void sendTemplateMessage(String template_id, String openid, JSONObject msgJson) {
-		String access_token = tokenDao.getLatestToken(PropertyConstants.APPID);
+		String access_token = tokenDao.getLatestToken(PropertyConstants.APPID,"01");
 		String url = PropertyConstants.TemplateMessageSendAddr + "?access_token="+access_token;
 		
 		JSONObject sendJson = new JSONObject();

@@ -41,6 +41,9 @@ public class PropertyConstants {
     public static String TemplateMessageSendAddr = "https://api.weixin.qq.com/cgi-bin/message/template/send";
     public static String SUCCESS = "SUCCESS";
     public static String FAIL = "FAIL";
+    public static String WEB_URL = "";
+    public static String WEB_PROJECT = "";
+    
     @Value("#{configProperties['project.whitePath']}")
 	public void setWhitePath(String whitePath) {
 		WhitePath = whitePath;
@@ -72,6 +75,14 @@ public class PropertyConstants {
     @Value("#{configProperties['project.TestAllowOpenId']}")
 	public void setTestAllowOpenId(String allowOpenId) {
 		TestAllowOpenId = Arrays.asList(allowOpenId.split(","));
+	}
+    @Value("#{configProperties['web.url']}")
+	public void setWEB_URL(String wEB_URL) {
+		WEB_URL = wEB_URL;
+	}
+    @Value("#{configProperties['web.project']}")
+	public void setWEB_PROJECT(String wEB_PROJECT) {
+		WEB_PROJECT = wEB_PROJECT;
 	}
     
 

@@ -11,7 +11,7 @@ public interface TokenDao {
 	 * @param appId
 	 * @return Boolean
 	 */
-	Boolean queryIsTokenTimeout(Integer minutes,String appId);
+	Boolean queryIsTokenTimeout(Integer minutes,String appId,String type);
 	
 	/**
 	 * @Description: 保存Token
@@ -23,7 +23,7 @@ public interface TokenDao {
 	 * @param appId
 	 * @return boolean
 	 */
-	public boolean saveToken(String accessToken,String expiresIn, String appId);
+	public boolean saveToken(String accessToken,String expiresIn, String appId,String type);
 	
 	/**
 	 * @Description: 查询最新token
@@ -33,5 +33,5 @@ public interface TokenDao {
 	 * @param appId
 	 * @return String
 	 */
-	public String getLatestToken(String appId);
+	public String getLatestToken(String appId,String type);
 }
