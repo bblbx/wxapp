@@ -322,7 +322,7 @@
 	padding-bottom: .2rem;
 	 }
 	 .content >span{
-	font-size: 0.5rem;
+	font-size: 0.8rem;
 	padding: 0.2rem 0rem;
 	margin-top:0.5rem;
 	margin-right:0.3rem;
@@ -338,8 +338,9 @@
 	.content > span.active {
 		color:#FFF;
 		background-color:#fe6604a8;
+		background: #fe6604a8;
 		border: .01rem solid #fe2704a8;
 	}
 	.shaixuan_paneldiv .shade{
-	z-index: 9;width: 100%;height: 100vh;position: absolute;right:0;box-sizing: border-box;background: rgba(0,0,0,.3);
+	z-index: 9;width: 100%;position: absolute;right:0;box-sizing: border-box;background: rgba(0,0,0,.3);
 	}

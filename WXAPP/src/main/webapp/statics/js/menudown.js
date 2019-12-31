@@ -6,7 +6,7 @@ $(function(){
     $(".shaixuan_panelcont").height(v_height-$(".shaixuan_textdiv").height()-$(".footer-navBar").height());
     $(".footer-navBar").width($(".shaixuan_panelcont").width());
     $(".footer-navBar").css('bottom',-v_height+$(".shaixuan_textdiv").height());
-    
+    $(".shade").height(v_height-$(".shaixuan_textdiv").height());
     $(".select_textdiv").click(function(){
 		$(this).parent().parent().siblings().find(".select_textul").hide();
 		$(this).parent().parent().siblings().find(".shaixuan_paneldiv").hide();

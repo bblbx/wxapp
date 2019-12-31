@@ -10,13 +10,13 @@
 	<meta content="black" name="apple-mobile-web-app-status-bar-style">
 	<meta content="telephone=no" name="format-detection">
 	 <script type="text/javascript" src="../statics/js/jquery-3.2.1.min.js"></script>
-	 <script type="text/javascript" src="../statics/js/menudown.js"></script>
-	 <script type="text/javascript" src="../statics/js/load-min.js"></script>
-	 <script type="text/javascript" src="../statics/js/productlist.js"></script>
-	 <link href="../statics/css/common.css" rel="stylesheet" type="text/css">
-	 <link href="../statics/css/menudown.css" rel="stylesheet" type="text/css">
-	 <link href="../statics/css/productlist.css"  rel="stylesheet" type="text/css">
-	 <link href="../statics/css/load.css"  rel="stylesheet" type="text/css">
+	 <script type="text/javascript" src="../statics/js/menudown.js?v=1.0"></script>
+	 <script type="text/javascript" src="../statics/js/load-min.js?v=1.0"></script>
+	 <script type="text/javascript" src="../statics/js/productlist.js?v=1.0"></script>
+	 <link href="../statics/css/common.css?v=1.0" rel="stylesheet" type="text/css">
+	 <link href="../statics/css/menudown.css?v=1.0" rel="stylesheet" type="text/css">
+	 <link href="../statics/css/productlist.css?v=1.0"  rel="stylesheet" type="text/css">
+	 <link href="../statics/css/load.css?v=1.0"  rel="stylesheet" type="text/css">
 </head>
 <body >
 <div class="jq22-flexView">
