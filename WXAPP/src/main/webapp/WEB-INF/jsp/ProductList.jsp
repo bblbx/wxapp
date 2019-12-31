@@ -203,7 +203,7 @@ $('.jq22-scrollView').scroll(function () {
 
 
 wx.config({
-    debug: false,
+    debug: true,
     appId: "${appId }",
     timestamp: "${timeStamp }",
     nonceStr: "${nonceStr }",
@@ -213,7 +213,11 @@ wx.config({
     ]
 });
 wx.ready(function(){
-	
+	wx.hideMenuItems({
+		  menuList: ['menuItem:editTag','menuItem:delete','menuItem:copyUrl',
+		             'menuItem:originPage','menuItem:readMode','menuItem:openWithQQBrowser',
+		             'menuItem:openWithSafari','menuItem:share:email','menuItem:share:brand'] // 要隐藏的菜单项，只能隐藏“传播类”和“保护类”按钮，所有menu项见附录3
+	});
 });
 </script>
 </html>
