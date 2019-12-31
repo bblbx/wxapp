@@ -19,7 +19,7 @@
 </head>
 <body  >
 <div class="jq22-flexView">
-<header class="jq22-navBar" >
+<header class="jq22-navBar" style="display: -webkit-box;">
 <a href="../servlet/otherweb?grade=${grade}&openid=${openid}&sphere=${sphere}&openid=${openid}" class="jq22-navBar-item">
 <i class="icon icon-return"></i>
 </a>
