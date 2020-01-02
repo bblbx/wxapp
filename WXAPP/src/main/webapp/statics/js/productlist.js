@@ -62,7 +62,7 @@
             		$("#viewcompanydiv").html("");
  					if (serverData.msg.length > 0) {
  						for (var i = 0; i < serverData.msg.length; i++) {
- 							let temp = "<a href='../company/detail?id="+serverData.msg[i].CompanyID+"&grade="+grade+"&sphere="+sphere+"' class='jq22-flex b-line'>"+
+ 							let temp = "<a href='../company/detail?id="+serverData.msg[i].CompanyID+"&grade="+grade+"&sphere="+sphere+"&openid="+openid+"' class='jq22-flex b-line'>"+
  							"<div class='jq22-flex-time-img'>"+
  							(serverData.msg[i].ImgUrl==null?"<img >":"<img src='"+serverData.msg[i].ImgUrl+"' >")+
  							"</div>"+

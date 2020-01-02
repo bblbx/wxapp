@@ -71,7 +71,7 @@ public class WXUserDaoImpl implements WXUserDao{
 		}
 		Query query = sessionFactory.getCurrentSession().createSQLQuery(sql.replace("mycontent", sb.toString()))
 				.setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP);
-		query.setString("limit", lines+"");
+		query.setInteger("limit", lines);
 		for(String key:params.keySet()){
 			query.setString(key, params.get(key));
 		}
@@ -82,7 +82,7 @@ public class WXUserDaoImpl implements WXUserDao{
 	public Boolean updateCompanyVisit(Map<String, Object> params) {
 		String sql = "select count(1) total from t_user_visit v join t_wx_user u on v.OpenID=u.OpenID "
 				+ "where v.type='02' and v.OpenID=:OpenID and v.CompanyID=:CompanyID and v.CreateDate>date_add(:today,interval -24 HOUR) "
-				+ "and v.CreateDate<:today ";
+				+ "and v.CreateDate<=:today ";
 		Query query = sessionFactory.getCurrentSession().createSQLQuery(sql)
 				.setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP);
 		query.setString("OpenID", params.get("OpenID").toString());
@@ -90,14 +90,17 @@ public class WXUserDaoImpl implements WXUserDao{
 		query.setString("today", params.get("CreateDate").toString());
 		System.out.println(params.get("CreateDate").toString());
 		int total = Integer.parseInt(((Map)query.list().get(0)).get("total").toString()) ;
-		if(total>0){
+		if(total ==1){
+			logger.error("公司访问次数加1，"+params.toString());
+			String sqlc = "update t_company_info set VisitNum=VisitNum+1 where CompanyID=:CompanyID";
+			query = sessionFactory.getCurrentSession().createSQLQuery(sqlc);
+			query.setString("CompanyID", params.get("CompanyID").toString());
+			query.executeUpdate();
+		}else if(total>1){
 			logger.info("24小时内进行过访问，本次不更新,访问记录"+params.toString());
-			return true;
+		}else if(total<1){
+			logger.error("没有找到用户信息，很可能是假的openid，"+params.toString());
 		}
-		String sqlc = "update t_company_info set VisitNum=VisitNum+1 where CompanyID=:CompanyID";
-		query = sessionFactory.getCurrentSession().createSQLQuery(sqlc);
-		query.setString("CompanyID", params.get("CompanyID").toString());
-		query.executeUpdate();
 		String sqlu = "update t_user_visit set Status='1' where ID=:ID ";
 		query = sessionFactory.getCurrentSession().createSQLQuery(sqlu);
 		query.setString("ID", params.get("ID").toString());

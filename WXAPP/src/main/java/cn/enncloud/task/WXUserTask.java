@@ -59,11 +59,13 @@ public class WXUserTask {
 		params.put("Type", "02");
 		params.put("Status", "0");
 		List<Map<String,Object>> list = userService.getVisitDetail(params, 500);
+		logger.info("待处理的用户访问数:"+list.size());
 		if(list == null || list.size()<1){
 			logger.info("没有需要更新的访问数据");
 			return ;
 		}
 		for(int i=0;i<list.size();i++){
+			logger.info("处理用户访问："+list.get(i));
 			userService.updateCompanyVisit(list.get(i));
 		}
 		logger.info("更新用户访问完成");
