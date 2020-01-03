@@ -97,6 +97,11 @@ public class CompanyDaoImpl implements CompanyDao{
 			}
 			sb.append(countystr.substring(0, countystr.length()-1)+")");
 		}
+		if(!DataUtil.IsNull(params.get("search"))){
+			sb.append(" and (com.SimpleName like :search or com.FullName like :search "
+					+ "or com.Provence like :search or com.City like :search "
+					+ "or com.County like :search or com.Address like :search ) ");
+		}
 		String order="";
 		if("view".equals(params.get("ageViewOrder"))){//优先点击量排序
 			if("0".equals(params.get("viewOrder")) ){//点击量升序
@@ -144,6 +149,9 @@ public class CompanyDaoImpl implements CompanyDao{
 				.setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP);
 		if(!DataUtil.IsNull(city)){
 			query.setString("City", city);
+		}
+		if(!DataUtil.IsNull(params.get("search"))){
+			query.setString("search", "%"+params.get("search")+"%");
 		}
 		query.setInteger("sl", (page-1)*limit);
 		query.setInteger("line", limit);

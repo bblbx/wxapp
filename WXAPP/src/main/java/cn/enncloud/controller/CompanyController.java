@@ -51,6 +51,7 @@ public class CompanyController {
 		String openid = request.getParameter("openid");
 		String page = request.getParameter("page");
 		String city = request.getParameter("city");//城市
+		String search = request.getParameter("search");//模糊搜索
 		String ageViewOrder = request.getParameter("ageViewOrder");//优先排序字段，age/view
 		Map<String,Object> params = new HashMap<String, Object>();
 		List<String> sp = new ArrayList<String>(),gr = new ArrayList<String>(),ageList = new ArrayList<String>(),countyList = new ArrayList<String>();
@@ -81,6 +82,7 @@ public class CompanyController {
 		params.put("openid", openid);
 		params.put("page", page);
 		params.put("city", city);
+		params.put("search", search);
 		params.put("ageViewOrder", ageViewOrder);
 		logger.info("用户"+openid+"分页查询公司列表，params="+params);
 		List<Map<String,Object>> list = companyService.getCompanySimpleInfoList(params, Integer.parseInt(DataUtil.FillNull(page, "1").toString()), 20);

@@ -44,8 +44,8 @@
 		 return ss;
 	 }
 	 function showDetail(com){
-		 let temp=$("input[name=ageOrder]").val()+';'+$("input[name=viewOrder]").val()+";"+ageViewOrder+";"+ageArr+";"+county+";";
-		window.location.href="../company/detail?id="+com+"&openid="+openid+"&sphere="+sphere+"&grade="+grade+"&city="+encodeURI(encodeURI(city))+"&oth="+encodeURI(encodeURI(temp));
+		 let temp=$("input[name=ageOrder]").val()+';'+$("input[name=viewOrder]").val()+";"+ageViewOrder+";"+ageArr+";"+county+";"+$('input[name=search]').val()+";";
+		 window.location.href="../company/detail?id="+com+"&openid="+openid+"&sphere="+sphere+"&grade="+grade+"&city="+encodeURI(encodeURI(city))+"&oth="+encodeURI(encodeURI(temp));
 	 }
 	 function submit(p){
 		 ageArr = getSelected('age'),county=getSelected('county');
@@ -60,6 +60,7 @@
         postData.sphere=sphere;
         postData.openid=openid;
         postData.city=city;
+        postData.search=$('input[name=search]').val();
         postData.page=p;
         addmask('jq22-scrollView');
         $.ajax({

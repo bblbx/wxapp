@@ -86,6 +86,14 @@
 				</c:forEach>
 				</div>
 			</div>
+			<div class="selectbox" data-selectbox-name="search">
+				<div class="title">
+				<span>自定义搜索(公司名或地址，最长15字符。)</span>
+				</div>
+				<div class="content" style="text-align: left;">
+				<input name="search" style="margin: 0.5rem; border: 1px solid #fe6604;width: 90%;font-size: 0.8rem;height: 1.5rem;" maxlength="15">
+				</div>
+			</div>
 			</div>
 			 <div class="footer-navBar" style="z-index: 10;">
 			 <a class="submit">确定</a> <a  class="reset">重置</a>
@@ -127,6 +135,9 @@ if(oth!=null &&oth!=""){
 		county.push( oths[4]);
 		$('span[data-county='+oths[4]+']').addClass('active');
 	}
+	if(oths[5]!=""){
+		$('input[name=search]').val(oths[5]);
+	}
 }
 //滚动触发
 $('.jq22-scrollView').scroll(function () {
@@ -140,7 +151,6 @@ $('.jq22-scrollView').scroll(function () {
 		submit(page);
 	}
 });
-
 
 wx.config({
     debug: false,
