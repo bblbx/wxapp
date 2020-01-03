@@ -18,7 +18,7 @@
 <body  >
 <div class="jq22-flexView">
 <header class="jq22-navBar" style="display: -webkit-box;">
-<a href="../servlet/otherweb?grade=${grade}&openid=${openid}&sphere=${sphere}&openid=${openid}" class="jq22-navBar-item">
+<a href="javascript:back()" class="jq22-navBar-item">
 <i class="icon icon-return"></i>
 </a>
 <div class="jq22-center">
@@ -72,7 +72,7 @@
 <div class="content">${company[0].TeachingArea}平方米</div>
 </div>
 <div class="item">
-<div class="title"><p>露天活面积</p></div>
+<div class="title"><p>露天活动面积</p></div>
 <div class="content">${company[0].OpenArea}平方米</div>
 </div>
 <div class="item">
@@ -104,38 +104,42 @@
 </div>
 </body>
 <script>
-            $( "#target-1" ).HappyImage({
-            	effect: "slide",//fade
-            	duration: 1000,
-            	autoplay: 3000
-            });
-            /*width: null,
-            height: null,
-            effect: "slide",
-            duration: 700,
-            arrow: !0,
-            dot: !0,
-            defaultIndex: 0,
-            arrowHoverShow: !1,
-            dotAlign: "center",
-            autoplay: 0,
-            onChange: a.noop*/
-            wx.config({
-                debug: false,
-                appId: "${appId }",
-                timestamp: "${timeStamp }",
-                nonceStr: "${nonceStr }",
-                signature: "${signature }",
-                jsApiList: [
-            	'hideMenuItems'
-                ]
-            });
-            wx.ready(function(){
-            	wx.hideMenuItems({
-            		  menuList: ['menuItem:editTag','menuItem:delete','menuItem:copyUrl',
-            		             'menuItem:originPage','menuItem:readMode','menuItem:openWithQQBrowser',
-            		             'menuItem:openWithSafari','menuItem:share:email','menuItem:share:brand'] // 要隐藏的菜单项，只能隐藏“传播类”和“保护类”按钮，所有menu项见附录3
-            	});
-            });
-        </script>
+function back(){
+	window.location.href="../servlet/otherweb?grade=${grade}&openid=${openid}&sphere=${sphere}&city="+encodeURI('${city}')+"&oth="+encodeURI('${oth}');
+}
+
+ $( "#target-1" ).HappyImage({
+ 	effect: "slide",//fade
+ 	duration: 1000,
+ 	autoplay: 3000
+ });
+ /*width: null,
+ height: null,
+ effect: "slide",
+ duration: 700,
+ arrow: !0,
+ dot: !0,
+ defaultIndex: 0,
+ arrowHoverShow: !1,
+ dotAlign: "center",
+ autoplay: 0,
+ onChange: a.noop*/
+ wx.config({
+     debug: false,
+     appId: "${appId }",
+     timestamp: "${timeStamp }",
+     nonceStr: "${nonceStr }",
+     signature: "${signature }",
+     jsApiList: [
+ 	'hideMenuItems'
+     ]
+ });
+ wx.ready(function(){
+ 	wx.hideMenuItems({
+ 		  menuList: ['menuItem:editTag','menuItem:delete','menuItem:copyUrl',
+ 		             'menuItem:originPage','menuItem:readMode','menuItem:openWithQQBrowser',
+ 		             'menuItem:openWithSafari','menuItem:share:email','menuItem:share:brand'] // 要隐藏的菜单项，只能隐藏“传播类”和“保护类”按钮，所有menu项见附录3
+ 	});
+ });
+</script>
 </html>

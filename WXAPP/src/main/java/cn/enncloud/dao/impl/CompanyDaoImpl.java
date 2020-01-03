@@ -31,6 +31,7 @@ public class CompanyDaoImpl implements CompanyDao{
 		sb.append("SELECT com.*,img.ImgUrl FROM t_company_info com "
 				+ "left JOIN (SELECT CompanyID,MAX(ImgUrl) ImgUrl from t_company_img where Type='01' GROUP BY CompanyID ) img on com.CompanyID=img.CompanyID "
 				+ "where com.`Status`=1 ");
+		String city=(String)params.get("city");
 		List<String> sphere = (List<String>)params.get("sphere");
 		List<String> grade = (List<String>)params.get("grade");
 		List<String> age = (List<String>)params.get("age");
@@ -55,6 +56,9 @@ public class CompanyDaoImpl implements CompanyDao{
 				}
 			}
 			gradeStr = "".equals(gradeStr)?"":gradeStr.substring(0, gradeStr.length()-1);
+		}
+		if(!DataUtil.IsNull(city)){
+			sb.append(" and com.City =:City ");
 		}
 		if(!"".equals(sphereStr) && !"".equals(gradeStr)){
 			sb.append(" and com.CompanyID in ("
@@ -94,28 +98,53 @@ public class CompanyDaoImpl implements CompanyDao{
 			sb.append(countystr.substring(0, countystr.length()-1)+")");
 		}
 		String order="";
-		if("0".equals(params.get("ageOrder")) ){//年龄升序
-			order= " order by com.BeginAge asc ";
-		}else if("1".equals(params.get("ageOrder")) ){
-			order= " order by com.BeginAge desc ";
-		}
-		if("0".equals(params.get("viewOrder")) ){//点击量升序
-			if(order==""){
+		if("view".equals(params.get("ageViewOrder"))){//优先点击量排序
+			if("0".equals(params.get("viewOrder")) ){//点击量升序
 				order= " order by com.VisitNum asc ";
-			}else {
-				order+= " ,com.VisitNum asc ";
-			}
-		}else if("1".equals(params.get("viewOrder")) ){
-			if(order==""){
+			}else if("1".equals(params.get("viewOrder")) ){
 				order= " order by com.VisitNum desc ";
-			}else {
-				order+= " ,com.VisitNum desc ";
+			}
+			if("0".equals(params.get("ageOrder")) ){//年龄升序
+				if(order==""){
+					order= " order by com.BeginAge asc ";
+				}else {
+					order+= " ,com.BeginAge asc ";
+				}
+			}else if("1".equals(params.get("ageOrder")) ){
+				if(order==""){
+					order= " order by com.BeginAge desc ";
+				}else {
+					order+= " ,com.BeginAge desc ";
+				}
+			}
+		}else{
+			if("0".equals(params.get("ageOrder")) ){//年龄升序
+				order= " order by com.BeginAge asc ";
+			}else if("1".equals(params.get("ageOrder")) ){
+				order= " order by com.BeginAge desc ";
+			}
+			if("0".equals(params.get("viewOrder")) ){//点击量升序
+				if(order==""){
+					order= " order by com.VisitNum asc ";
+				}else {
+					order+= " ,com.VisitNum asc ";
+				}
+			}else if("1".equals(params.get("viewOrder")) ){
+				if(order==""){
+					order= " order by com.VisitNum desc ";
+				}else {
+					order+= " ,com.VisitNum desc ";
+				}
 			}
 		}
+		
 		sb.append(order);
 		sb.append(" LIMIT :sl,:line ");
 		Query query = sessionFactory.getCurrentSession().createSQLQuery(sb.toString())
 				.setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP);
+		if(!DataUtil.IsNull(city)){
+			query.setString("City", city);
+		}
 		query.setInteger("sl", (page-1)*limit);
 		query.setInteger("line", limit);
 		return query.list();

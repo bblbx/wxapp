@@ -13,22 +13,25 @@
 			    	$this.hasClass('active') ? $this.removeClass('active') : $this.addClass('active').siblings().removeClass('active');
 		    });
 		    $('.submit').click(function(){
-		    	submit();
+		    	submit(1);
 		    	$('.shaixuan_paneldiv').fadeToggle(100);
 		    });
 		    $('.reset').click(function(){
 		    	 $('.shaixuan_panelcont').find("span").removeClass('active');
 		    });
 		    $('.shade').click(function(){
-		    	submit();
+		    	submit(1);
 		    	$('.shaixuan_paneldiv').fadeToggle(100);
 		    });
 		    $("input[name=ageOrder]").on('change',function(){
-		    	submit();
+		    	ageViewOrder='age';
+		    	submit(1);
 			});
 			$("input[name=viewOrder]").on('change',function(){
-				submit();
+				ageViewOrder='view';
+				submit(1);
 			});
+			submit(1);
 	 });
 	 function getSelected(name){
 		 let ss = [];
@@ -40,7 +43,11 @@
          });
 		 return ss;
 	 }
-	 function submit(){
+	 function showDetail(com){
+		 let temp=$("input[name=ageOrder]").val()+';'+$("input[name=viewOrder]").val()+";"+ageViewOrder+";"+ageArr+";"+county+";";
+		window.location.href="../company/detail?id="+com+"&openid="+openid+"&sphere="+sphere+"&grade="+grade+"&city="+encodeURI(encodeURI(city))+"&oth="+encodeURI(encodeURI(temp));
+	 }
+	 function submit(p){
 		 ageArr = getSelected('age'),county=getSelected('county');
 		//请求参数
         let postData = {};
@@ -48,10 +55,12 @@
         postData.county=county+"";
         postData.viewOrder=$("input[name=viewOrder]").val();
         postData.ageOrder=$("input[name=ageOrder]").val();
+        postData.ageViewOrder=ageViewOrder;
         postData.grade=grade;
         postData.sphere=sphere;
         postData.openid=openid;
-        postData.page='1';
+        postData.city=city;
+        postData.page=p;
         addmask('jq22-scrollView');
         $.ajax({
             type : "POST",
@@ -59,10 +68,14 @@
             data : postData,
             success : function(serverData) {
             	if (serverData.success == 'true') {
-            		$("#viewcompanydiv").html("");
+					if(p==1){
+						$("#viewcompanydiv").html("");
+						now=1;
+						hasall=false;
+					}
  					if (serverData.msg.length > 0) {
  						for (var i = 0; i < serverData.msg.length; i++) {
- 							let temp = "<a href='../company/detail?id="+serverData.msg[i].CompanyID+"&grade="+grade+"&sphere="+sphere+"&openid="+openid+"' class='jq22-flex b-line'>"+
+ 							let temp = '<a href="javascript:showDetail(\''+serverData.msg[i].CompanyID+'\')" class="jq22-flex b-line">'+
  							"<div class='jq22-flex-time-img'>"+
  							(serverData.msg[i].ImgUrl==null?"<img >":"<img src='"+serverData.msg[i].ImgUrl+"' >")+
  							"</div>"+
@@ -88,7 +101,7 @@
  							hasall = true;//已经到底
  							$("#end").show();
  						}
- 						page++;
+ 						page=p+1;
  					} else {
  						hasall = true;//已经到底
  						$("#end").show();

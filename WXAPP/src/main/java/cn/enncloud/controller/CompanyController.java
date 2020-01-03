@@ -50,7 +50,8 @@ public class CompanyController {
 		String ageOrder = request.getParameter("ageOrder");// 请求的类型信息
 		String openid = request.getParameter("openid");
 		String page = request.getParameter("page");
-		
+		String city = request.getParameter("city");//城市
+		String ageViewOrder = request.getParameter("ageViewOrder");//优先排序字段，age/view
 		Map<String,Object> params = new HashMap<String, Object>();
 		List<String> sp = new ArrayList<String>(),gr = new ArrayList<String>(),ageList = new ArrayList<String>(),countyList = new ArrayList<String>();
 		if(!DataUtil.IsNull(grade)){
@@ -79,6 +80,8 @@ public class CompanyController {
 		params.put("age", ageList);
 		params.put("openid", openid);
 		params.put("page", page);
+		params.put("city", city);
+		params.put("ageViewOrder", ageViewOrder);
 		logger.info("用户"+openid+"分页查询公司列表，params="+params);
 		List<Map<String,Object>> list = companyService.getCompanySimpleInfoList(params, Integer.parseInt(DataUtil.FillNull(page, "1").toString()), 20);
 		if(list !=null){
@@ -96,6 +99,8 @@ public class CompanyController {
 		String grade = request.getParameter("grade");// 请求的类型信息
 		String sphere = request.getParameter("sphere");// 请求的类型信息
 		String openid = request.getParameter("openid");
+		String city = request.getParameter("city");
+		String oth = request.getParameter("oth");
 		ModelAndView modelAndView = new ModelAndView("ProductDetail");
 		logger.info("查询公司明细，companyid="+companyid+",grade="+grade+",sphere="+sphere+",openid="+openid);
 		if(!DataUtil.IsNull(companyid)){
@@ -114,6 +119,9 @@ public class CompanyController {
 			modelAndView.addObject("rich", richlist);
 			modelAndView.addObject("grade", grade);
 			modelAndView.addObject("sphere", sphere);
+			modelAndView.addObject("openid", openid);
+			modelAndView.addObject("oth", oth);
+			modelAndView.addObject("city", city);
 		}
 		//获取js-sdk签名
 		String parms = request.getQueryString();

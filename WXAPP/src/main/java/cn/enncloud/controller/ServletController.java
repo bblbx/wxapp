@@ -1,5 +1,7 @@
 package cn.enncloud.controller;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -129,13 +131,18 @@ public class ServletController {
 	 * @param request
 	 * @param model
 	 * @return ModelAndView
+	 * @throws UnsupportedEncodingException 
 	 */
 	@RequestMapping("/otherweb")
 	@ResponseBody
-	public ModelAndView otherWeb(HttpServletRequest request, Model model) {
+	public ModelAndView otherWeb(HttpServletRequest request, Model model) throws UnsupportedEncodingException {
 		String grade = request.getParameter("grade");// 请求的类型信息
 		String sphere = request.getParameter("sphere");// 请求的类型信息
 		String openid = request.getParameter("openid");
+		String city = request.getParameter("city");//城市
+		String oth = request.getParameter("oth");//oth
+		oth = DataUtil.IsNull(oth)?"":URLDecoder.decode(oth , "UTF-8");
+		city = DataUtil.IsNull(city)?"":URLDecoder.decode(city , "UTF-8");
 		ModelAndView modelAndView = new ModelAndView("ProductList");
 		Map<String,Object> params = new HashMap<String, Object>();
 		List<String> sp = new ArrayList<String>(),gr = new ArrayList<String>();
@@ -147,14 +154,17 @@ public class ServletController {
 		}
 		params.put("sphere", sp);
 		params.put("grade", gr);
-		logger.info("用户"+openid+"查询公司列表，sphere="+sphere+"查询公司列表，grade="+grade);
-		List<Map<String,Object>> list = companyService.getCompanySimpleInfoList(params, 1, 20);
+		params.put("city", city);
+		logger.info("用户"+openid+"查询公司列表，sphere="+sphere+"，grade="+grade+"，city="+city);
+//		List<Map<String,Object>> list = companyService.getCompanySimpleInfoList(params, 1, 20);
 		List<Map<String,Object>> selectList =  commonService.getSelectInfo("03");
-		modelAndView.addObject("data", list);
+//		modelAndView.addObject("data", list);
 		modelAndView.addObject("county", selectList);
 		modelAndView.addObject("openid", openid);
 		modelAndView.addObject("grade", grade);
 		modelAndView.addObject("sphere", sphere);
+		modelAndView.addObject("city", city);
+		modelAndView.addObject("oth", oth);
 		//获取js-sdk签名
 		String parms = request.getQueryString();
 		String timeStamp = WXPayUtil.getCurrentTimestamp()+"";

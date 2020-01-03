@@ -26,9 +26,9 @@ $(function(){
 		var ynul = $(this).parent("li").has(".select_second_ul").length;
         if(ynul == 0){
         	
-        	var choose = $(this).text();
-			$(this).parents(".select_textul").siblings(".select_textdiv").find(".s_text").text(choose);
-			$(this).parents(".select_textul").siblings(".select_textdiv").find("input").val(choose);
+        	var choosetext = $(this).text(),choosevalue = $(this).attr('data-value');
+			$(this).parents(".select_textul").siblings(".select_textdiv").find(".s_text").text(choosetext);
+			$(this).parents(".select_textul").siblings(".select_textdiv").find("input").val(choosevalue);
 			$(this).parents(".select_textul").fadeOut(100);
 			$(this).parents(".select_textul").siblings(".select_textdiv").find("input").trigger("change");
 			$(".select_textdiv").removeClass("divfocus");

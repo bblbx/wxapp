@@ -12,9 +12,9 @@
 	 <script type="text/javascript" src="../statics/js/jquery-3.2.1.min.js"></script>
 	 <script type="text/javascript" src="../statics/js/menudown.js?v=1.0"></script>
 	 <script type="text/javascript" src="../statics/js/load-min.js?v=1.0"></script>
-	 <script type="text/javascript" src="../statics/js/productlist.js?v=1.0"></script>
+	 <script type="text/javascript" src="../statics/js/productlist.js?v=1.1"></script>
 	 <link href="../statics/css/common.css?v=1.0" rel="stylesheet" type="text/css">
-	 <link href="../statics/css/menudown.css?v=1.0" rel="stylesheet" type="text/css">
+	 <link href="../statics/css/menudown.css?v=1.1" rel="stylesheet" type="text/css">
 	 <link href="../statics/css/productlist.css?v=1.0"  rel="stylesheet" type="text/css">
 	 <link href="../statics/css/load.css?v=1.0"  rel="stylesheet" type="text/css">
 	 <script src="http://res.wx.qq.com/open/js/jweixin-1.4.0.js"></script>
@@ -26,7 +26,7 @@
 		<div class="selectlist">
 			<div class="select_textdiv">
 				<input type="hidden" value="0" name="ageOrder"/>
-				<p class="s_text">年龄升序</p><span class="down"><img src="../statics/img/down.png"></span>
+				<p class="s_text" name="ageOrderTxt">年龄升序</p><span class="down"><img src="../statics/img/down.png"></span>
 			</div>
 			<div class="select_textul">
 				<ul class="select_first_ul">
@@ -44,7 +44,7 @@
 		<div class="selectlist">
 			<div class="select_textdiv">
 				<input type="hidden" value="1" name="viewOrder"/>
-				<p class="s_text">点击量降序</p><span class="down"><img src="../statics/img/down.png"></span>
+				<p class="s_text" name="viewOrderTxt">点击量降序</p><span class="down"><img src="../statics/img/down.png"></span>
 			</div>
 			<div class="select_textul">
 				<ul class="select_first_ul">
@@ -97,40 +97,37 @@
 	</header>
 	<div class="jq22-scrollView" id="jq22-scrollView">
 		<div class="jq22-limit-box" id="viewcompanydiv">
-		<c:forEach var="item"  items="${data}">
-			<a href="../company/detail?id=${item['CompanyID']}&grade=${item['grade']}&sphere=${item['sphere']}&openid=${openid}" class="jq22-flex b-line">
-			<div class="jq22-flex-time-img">
-			<img src="${item['ImgUrl']}" alt="">
-			</div>
-			<div class="jq22-flex-box">
-			<h1>${item['SimpleName']}</h1>
-			<div class="jq22-flex jq22-flex-clear-pa">
-			<div class="jq22-flex-box">
-			<div style="float: left;">
-			<h3>服务年龄:<font color="red">${item['BeginAge']}-${item['EndAge']}岁</font></h3>
-			</div>
-			<div style="float: right;">
-			<h3>点击量:${item['VisitNum']}</h3>
-			</div>
-			</div>
-			</div>
-			<h2>主营项目:${item['MainBusiness']}</h2>
-			</div>
-			</a>
-			<hr/>
-		</c:forEach>
 		</div>
 		<div style="text-align: center; color: #DDDDDD; display: none;" id="end">--已经到底了--</div>
 	</section>
 </section>
 </body>
 <script type="text/javascript">
-var sphere = '${sphere}',grade='${grade}',openid='${openid}';
+var sphere = '${sphere}',grade='${grade}',openid='${openid}',ageViewOrder='age',city='${city}',oth='${oth}';
+var page=1,now=1,hasall=false;
 var ageArr =[],county=[];
-var page=2;
-var now=1;
-//var winH = $(window).height(); //页面可视区域高度
-var hasall=false;
+if(oth!=null &&oth!=""){
+	let oths = oth.split(";");
+	if(oths[0]=='1'){
+		$("input[name=ageOrder]").val(oths[0]);
+		$("p[name=ageOrderTxt]").val("年龄降序");
+	}
+	if(oths[1]=='0'){
+		$("input[name=viewOrder]").val(oths[1]);
+		$("p[name=viewOrderTxt]").val("点击量升序");
+	}
+	ageViewOrder=oths[2];
+	if(oths[3]!=""){
+		ageArr = oths[3].split(",");
+		ageArr.forEach(function(value,index,self){
+			$('span[data-age='+value+']').addClass('active');
+		});
+	}
+	if(oths[4]!=""){
+		county.push( oths[4]);
+		$('span[data-county='+oths[4]+']').addClass('active');
+	}
+}
 //滚动触发
 $('.jq22-scrollView').scroll(function () {
 	var $this =$(this);
@@ -140,64 +137,7 @@ $('.jq22-scrollView').scroll(function () {
 	var aa = (pageH - winH - scrollT) / winH;
 	if (aa <= 0.01 && !hasall && page != now) {
 		now = page;
-		var postData = {};
-       postData.age=ageArr+"";
-       postData.county=county+"";
-       postData.viewOrder=$("input[name=viewOrder]").val();
-       postData.ageOrder=$("input[name=ageOrder]").val();
-       postData.grade=grade;
-       postData.sphere=sphere;
-       postData.openid=openid;
-       postData.page=page;
-		addmask('jq22-scrollView');
-		$.ajax({
-			type : 'POST',
-			url : "../company/getcompanylist",
-			data : postData,
-			success : function(serverData) {
-				if (serverData.success == 'true') {
-					if (serverData.msg.length > 0) {
-						for (var i = 0; i < serverData.msg.length; i++) {
-							var html = "<a href='../company/detail?id="+serverData.msg[i].CompanyID+"&grade=${grade}&sphere=${sphere}&openid=${openid}' class='jq22-flex b-line'>"+
-							"<div class='jq22-flex-time-img'>"+
-							"<img src='"+serverData.msg[i].ImgUrl+"' >"+
-							"</div>"+
-							"<div class='jq22-flex-box'>"+
-							"<h1>"+serverData.msg[i].SimpleName+"</h1>"+
-							"<div class='jq22-flex jq22-flex-clear-pa'>"+
-							"<div class='jq22-flex-box'>"+
-							"<div style='float: left;'>"+
-							"<h3>服务年龄:<font color='red'>"+serverData.msg[i].BeginAge+"-"+serverData.msg[i].EndAge+"岁</font></h3>"+
-							"</div>"+
-							"<div style='float: right;'>"+
-							"<h3>点击量:"+serverData.msg[i].VisitNum+"</h3>"+
-							"</div>"+
-							"</div>"+
-							"</div>"+
-							"<h2>主营项目:"+serverData.msg[i].MainBusiness+"</h2>"+
-							"</div>"+
-							"</a><hr/>"
-							;
-							$("#viewcompanydiv").append(html);
-						} 
-						if (serverData.msg.length < 10) {
-							hasall = true;//已经到底
-							$("#end").show();
-						}
-						page++;
-					} else {
-						hasall = true;//已经到底
-						$("#end").show();
-					}
-					removemask('jq22-scrollView');
-				} else {
-					hasall = true;//已经到底
-					$("#end").show();
-					removemask('jq22-scrollView');
-				}
-			},
-			dataType : "json"
-		});
+		submit(page);
 	}
 });
 
