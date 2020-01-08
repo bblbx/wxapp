@@ -31,12 +31,12 @@ public class CompanyDaoImpl implements CompanyDao{
 		sb.append("SELECT com.*,img.ImgUrl FROM t_company_info com "
 				+ "left JOIN (SELECT CompanyID,MAX(ImgUrl) ImgUrl from t_company_img where Type='01' GROUP BY CompanyID ) img on com.CompanyID=img.CompanyID "
 				+ "where com.`Status`=1 ");
-		String city=(String)params.get("city");
+//		String city=(String)params.get("city");
 		List<String> sphere = (List<String>)params.get("sphere");
 		List<String> grade = (List<String>)params.get("grade");
 		List<String> age = (List<String>)params.get("age");
 		List<String> county = (List<String>)params.get("county");
-		String sphereStr="", gradeStr="";
+		String sphereStr="", gradeStr="", countyStr="";
 		if(sphere != null && sphere.size()>0){
 			for(String item:sphere){
 				if(item.length()<=4){
@@ -57,8 +57,25 @@ public class CompanyDaoImpl implements CompanyDao{
 			}
 			gradeStr = "".equals(gradeStr)?"":gradeStr.substring(0, gradeStr.length()-1);
 		}
-		if(!DataUtil.IsNull(city)){
-			sb.append(" and com.City =:City ");
+		if(county != null && county.size()>0){
+			for(String item:county){
+				if(item.length()<=4){
+					countyStr+="'"+item+"',";
+				}else {
+					logger.error("查询公司信息参数异常，countyStr为："+item);
+				}
+			}
+			countyStr = "".equals(countyStr)?"":countyStr.substring(0, countyStr.length()-1);
+		}
+//		if(!DataUtil.IsNull(city)){
+//			sb.append(" and com.City =:City ");
+//		}
+		
+		if(!DataUtil.IsNull(params.get("recomend"))){
+			sb.append(" and com.IsRecommend =:IsRecommend ");
+		}
+		if(!"".equals(countyStr) && !"".equals(countyStr)){
+			sb.append(" and com.CountyID in ( "+countyStr+") ");
 		}
 		if(!"".equals(sphereStr) && !"".equals(gradeStr)){
 			sb.append(" and com.CompanyID in ("
@@ -86,17 +103,17 @@ public class CompanyDaoImpl implements CompanyDao{
 			}
 			sb.append(agestr.substring(0, agestr.length()-2)+") ");
 		}
-		if(county!=null &&county.size()>0 ){
-			String countystr = " and com.County in ( ";
-			for(String item :county){
-				if(item.length()<=3){
-					countystr+="'"+item+"',";
-				}else {
-					logger.error("查询公司信息参数异常，区县为："+item);
-				}
-			}
-			sb.append(countystr.substring(0, countystr.length()-1)+")");
-		}
+//		if(county!=null &&county.size()>0 ){
+//			String countystr = " and com.County in ( ";
+//			for(String item :county){
+//				if(item.length()<=3){
+//					countystr+="'"+item+"',";
+//				}else {
+//					logger.error("查询公司信息参数异常，区县为："+item);
+//				}
+//			}
+//			sb.append(countystr.substring(0, countystr.length()-1)+")");
+//		}
 		if(!DataUtil.IsNull(params.get("search"))){
 			sb.append(" and (com.SimpleName like :search or com.FullName like :search "
 					+ "or com.Provence like :search or com.City like :search "
@@ -147,11 +164,14 @@ public class CompanyDaoImpl implements CompanyDao{
 		sb.append(" LIMIT :sl,:line ");
 		Query query = sessionFactory.getCurrentSession().createSQLQuery(sb.toString())
 				.setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP);
-		if(!DataUtil.IsNull(city)){
-			query.setString("City", city);
-		}
+//		if(!DataUtil.IsNull(city)){
+//			query.setString("City", city);
+//		}
 		if(!DataUtil.IsNull(params.get("search"))){
 			query.setString("search", "%"+params.get("search")+"%");
+		}
+		if(!DataUtil.IsNull(params.get("recomend"))){
+			query.setString("IsRecommend", params.get("recomend").toString());
 		}
 		query.setInteger("sl", (page-1)*limit);
 		query.setInteger("line", limit);

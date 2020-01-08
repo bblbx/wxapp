@@ -21,6 +21,7 @@ import org.springframework.web.servlet.view.RedirectView;
 
 import com.alibaba.fastjson.JSONObject;
 
+import cn.enncloud.bean.SelectInfo;
 import cn.enncloud.service.CommonService;
 import cn.enncloud.service.CompanyService;
 import cn.enncloud.service.WXService;
@@ -56,6 +57,7 @@ public class ServletController {
 		String requestpage = request.getParameter("requestpage");// 获取请求的页面
 		String sphere = request.getParameter("s");// 领域
 		String grade = request.getParameter("g");// 级别
+		String recomend = request.getParameter("re");// 推荐
 		String code = request.getParameter("code");
 		String openid = "";//request.getParameter("openid");
 		if (openid == null || "".equals(openid)) {
@@ -83,8 +85,9 @@ public class ServletController {
 		ModelAndView modelAndView = null;
 		if ("other".equals(requestpage)) {
 			modelAndView = new ModelAndView(new RedirectView("../servlet/otherweb"));
-			modelAndView.addObject("sphere", sphere);
-			modelAndView.addObject("grade", grade);
+			modelAndView.addObject("sphereF", sphere);
+			modelAndView.addObject("gradeF", grade);
+			modelAndView.addObject("recomendF", grade);
 			modelAndView.addObject("openid", openid);
 		} else {
 			modelAndView = new ModelAndView(requestpage);
@@ -138,33 +141,79 @@ public class ServletController {
 	public ModelAndView otherWeb(HttpServletRequest request, Model model) throws UnsupportedEncodingException {
 		String grade = request.getParameter("grade");// 请求的类型信息
 		String sphere = request.getParameter("sphere");// 请求的类型信息
+		String county = request.getParameter("county");// 请求的区域信息
+		String city = request.getParameter("city");// 请求的区域信息
+		String recomend = request.getParameter("recomend");//是否推荐
+		String age = request.getParameter("age");//年龄
 		String openid = request.getParameter("openid");
-		String city = request.getParameter("city");//城市
-		String oth = request.getParameter("oth");//oth
-		oth = DataUtil.IsNull(oth)?"":URLDecoder.decode(oth , "UTF-8");
-		city = DataUtil.IsNull(city)?"":URLDecoder.decode(city , "UTF-8");
+		String ageViewOrder = request.getParameter("ageViewOrder");
+		String ageOrder = request.getParameter("ageOrder");
+		String viewOrder = request.getParameter("viewOrder");
+		String searchTemp = request.getParameter("search");
+		String search = DataUtil.IsNull(searchTemp)?"":URLDecoder.decode(searchTemp , "UTF-8");
+//		String city = request.getParameter("city");//城市
+//		String oth = request.getParameter("oth");//oth
+//		oth = DataUtil.IsNull(oth)?"":URLDecoder.decode(oth , "UTF-8");
+//		city = DataUtil.IsNull(city)?"":URLDecoder.decode(city , "UTF-8");
 		ModelAndView modelAndView = new ModelAndView("ProductList");
 		Map<String,Object> params = new HashMap<String, Object>();
-		List<String> sp = new ArrayList<String>(),gr = new ArrayList<String>();
+		List<String> sp = new ArrayList<String>(),gr = new ArrayList<String>(),
+				ar = new ArrayList<String>(),agelist = new ArrayList<String>();
 		if(!DataUtil.IsNull(grade)){
-			gr.add(grade);
+			String[] temp = grade.split(",");
+			for(String t:temp){
+				gr.add(t);
+			}
 		}
 		if(!DataUtil.IsNull(sphere)){
-			sp.add(sphere);
+			String[] temp = sphere.split(",");
+			for(String t:temp){
+				sp.add(t);
+			}
+			
+		}
+		if(!DataUtil.IsNull(county)){
+			String[] temp = county.split(",");
+			for(String t:temp){
+				ar.add(t);
+			}
+		}
+		if(!DataUtil.IsNull(age)){
+			String[] temp = age.split(",");
+			for(String t:temp){
+				agelist.add(t);
+			}
 		}
 		params.put("sphere", sp);
 		params.put("grade", gr);
-		params.put("city", city);
-		logger.info("用户"+openid+"查询公司列表，sphere="+sphere+"，grade="+grade+"，city="+city);
-//		List<Map<String,Object>> list = companyService.getCompanySimpleInfoList(params, 1, 20);
-		List<Map<String,Object>> selectList =  commonService.getSelectInfo("03");
-//		modelAndView.addObject("data", list);
-		modelAndView.addObject("county", selectList);
+		params.put("county", ar);
+		params.put("age", agelist);
+		params.put("recomend", recomend);
+		params.put("viewOrder", viewOrder);
+		params.put("ageOrder", ageOrder);
+		params.put("ageViewOrder", ageViewOrder);
+		params.put("search", search);
+		logger.info("用户"+openid+"查询公司列表，参数="+params);
+		List<Map<String,Object>> list = companyService.getCompanySimpleInfoList(params, 1, 20);
+		List<SelectInfo> selectList= commonService.getJiLianSelectInfo("01");
+//		List<Map<String,Object>> selectList =  commonService.getSelectInfo("03");
+		modelAndView.addObject("data", list);
+		modelAndView.addObject("areas", selectList);//区域
+		modelAndView.addObject("grades", commonService.getSelectInfo("01"));//阶段
+		modelAndView.addObject("spheres", commonService.getSelectInfo("02"));//领域
 		modelAndView.addObject("openid", openid);
 		modelAndView.addObject("grade", grade);
 		modelAndView.addObject("sphere", sphere);
+		modelAndView.addObject("county", county);
 		modelAndView.addObject("city", city);
-		modelAndView.addObject("oth", oth);
+		modelAndView.addObject("age", age);
+		modelAndView.addObject("recomend", recomend);
+		modelAndView.addObject("viewOrder", viewOrder);
+		modelAndView.addObject("ageOrder", ageOrder);
+		modelAndView.addObject("ageViewOrder", ageViewOrder);
+		modelAndView.addObject("search", search);
+//		modelAndView.addObject("city", city);
+//		modelAndView.addObject("oth", oth);
 		//获取js-sdk签名
 		String parms = request.getQueryString();
 		String timeStamp = WXPayUtil.getCurrentTimestamp()+"";

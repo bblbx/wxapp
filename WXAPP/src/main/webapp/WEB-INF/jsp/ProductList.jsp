@@ -12,7 +12,7 @@
 	 <script type="text/javascript" src="../statics/js/jquery-3.2.1.min.js"></script>
 	 <script type="text/javascript" src="../statics/js/menudown.js?v=1.0"></script>
 	 <script type="text/javascript" src="../statics/js/load-min.js?v=1.0"></script>
-	 <script type="text/javascript" src="../statics/js/productlist.js?v=1.1"></script>
+	 <script type="text/javascript" src="../statics/js/productlist.js?v=1.3"></script>
 	 <link href="../statics/css/common.css?v=1.0" rel="stylesheet" type="text/css">
 	 <link href="../statics/css/menudown.css?v=1.1" rel="stylesheet" type="text/css">
 	 <link href="../statics/css/productlist.css?v=1.0"  rel="stylesheet" type="text/css">
@@ -76,14 +76,52 @@
 				</c:forEach>
 				</div>
 			</div>
+			<div class="selectbox" data-selectbox-name="grade">
+				<div class="title">
+				<span>学习开发</span>
+				</div>
+				<div class="content" style="text-align: center;">
+				<c:forEach var="item" items="${grades}">
+				<span class="multiple" data-grade=${item['Code']}>${item['Name']}</span>
+				</c:forEach>
+				</div>
+			</div>
+			<div class="selectbox" data-selectbox-name="sphere">
+				<div class="title">
+				<span>兴趣爱好</span>
+				</div>
+				<div class="content" style="text-align: center;">
+				<c:forEach var="item" items="${spheres}">
+				<span class="multiple" data-sphere=${item['Code']}>${item['Name']}</span>
+				</c:forEach>
+				</div>
+			</div>
 			<div class="selectbox" data-selectbox-name="county">
 				<div class="title">
 				<span>区县</span>
 				</div>
 				<div class="content" style="text-align: center;">
-				<c:forEach var="item" items="${county}">
-				<span class="single" data-county=${item['Name']}>${item['Name']}</span>
+				
+				<c:forEach var="item" items="${areas}">
+				<span class="datacity" data-city=${item['id']}>${item['name']}</span>
 				</c:forEach>
+				
+				<c:forEach var="item" items="${areas}">
+				<div class="content" style="text-align: center;display: none;border: 1px solid rgb(249, 166, 166);" data-county-div=${item['id']}>
+				<c:forEach var="ch" items="${item['children']}">
+					<span class="multiple datacounty" data-county=${ch['id']}>${ch['name']}</span>
+				</c:forEach>
+				</div>
+				</c:forEach>
+				</div>
+			</div>
+			<div class="selectbox" data-selectbox-name="recomend">
+				<div class="title">
+				<span>推荐</span>
+				</div>
+				<div class="content" style="text-align: center;">
+				<span class="single" data-recomend='Y'>推荐</span>
+				<span class="single" data-recomend='N'>非推荐</span>
 				</div>
 			</div>
 			<div class="selectbox" data-selectbox-name="search">
@@ -111,34 +149,65 @@
 </section>
 </body>
 <script type="text/javascript">
-var sphere = '${sphere}',grade='${grade}',openid='${openid}',ageViewOrder='age',city='${city}',oth='${oth}';
+var sphere = '${sphere}',grade='${grade}',openid='${openid}',ageViewOrder='${ageViewOrder}',county='${county}',
+age='${age}',recomend='${recomend}',ageOrder='${ageOrder}',viewOrder='${viewOrder}',city='${city}';
 var page=1,now=1,hasall=false;
-var ageArr =[],county=[];
-if(oth!=null &&oth!=""){
-	let oths = oth.split(";");
-	if(oths[0]=='1'){
-		$("input[name=ageOrder]").val(oths[0]);
-		$("p[name=ageOrderTxt]").val("年龄降序");
-	}
-	if(oths[1]=='0'){
-		$("input[name=viewOrder]").val(oths[1]);
-		$("p[name=viewOrderTxt]").val("点击量升序");
-	}
-	ageViewOrder=oths[2];
-	if(oths[3]!=""){
-		ageArr = oths[3].split(",");
-		ageArr.forEach(function(value,index,self){
-			$('span[data-age='+value+']').addClass('active');
-		});
-	}
-	if(oths[4]!=""){
-		county.push( oths[4]);
-		$('span[data-county='+oths[4]+']').addClass('active');
-	}
-	if(oths[5]!=""){
-		$('input[name=search]').val(oths[5]);
-	}
+var ageArr =[],countyArr=[],sphereArr=[],gradeArr=[],cityArr=[],recomendArr=[];
+if(sphere!=null &&sphere!=""){
+	sphereArr = sphere.split(",");
+	sphereArr.forEach(function(value,index,self){
+		$('span[data-sphere='+value+']').addClass('active');
+	});
 }
+if(grade!=null &&grade!=""){
+	gradeArr = grade.split(",");
+	gradeArr.forEach(function(value,index,self){
+		$('span[data-grade='+value+']').addClass('active');
+	});
+}
+if(age!=null &&age!=""){
+	ageArr = age.split(",");
+	ageArr.forEach(function(value,index,self){
+		$('span[data-age='+value+']').addClass('active');
+	});
+}
+if(county!=null &&county!=""){
+	countyArr = county.split(",");
+	countyArr.forEach(function(value,index,self){
+		$('span[data-county='+value+']').addClass('active');
+	});
+}
+if(city!=null &&city!=""){
+	cityArr = city.split(",");
+	cityArr.forEach(function(value,index,self){
+		$('span[data-city='+value+']').addClass('active');
+	});
+}
+if(recomend!=null &&recomend!=""){
+	recomendArr = recomend.split(",");
+	recomendArr.forEach(function(value,index,self){
+		$('span[data-recomend='+value+']').addClass('active');
+	});
+}
+if(ageOrder=="1"){
+	$("input[name=ageOrder]").val('1');
+	$("p[name=ageOrderTxt]").val("年龄降序");
+}else {
+	$("input[name=ageOrder]").val('0');
+	$("p[name=ageOrderTxt]").val("年龄升序");
+}
+if(viewOrder=="0"){
+	$("input[name=viewOrder]").val('0');
+	$("p[name=viewOrderTxt]").val("点击量升序");
+}else {
+	$("input[name=viewOrder]").val('1');
+	$("p[name=viewOrderTxt]").val("点击量降序");
+}
+if(ageViewOrder==null || ageViewOrder==''){
+	ageViewOrder='age';
+}
+$('input[name=search]').val('${search}');
+
 //滚动触发
 $('.jq22-scrollView').scroll(function () {
 	var $this =$(this);

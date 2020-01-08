@@ -6,11 +6,22 @@
 	    	    function() {
 			    	let $this = $(this);
 			   	    $this.hasClass('active') ? $this.removeClass('active') : $this.addClass('active');
+			   	    if($this.hasClass('datacounty') && ($this.siblings().hasClass('active') || $this.hasClass('active'))){
+			   	    	$('.datacity[data-city='+$this.parent().attr('data-county-div')+']').addClass('active');
+			   	    }else if($this.hasClass('datacounty') && (!$this.siblings().hasClass('active') && !$this.hasClass('active'))){
+			   	    	$('.datacity[data-city='+$this.parent().attr('data-county-div')+']').removeClass('active');
+			   	    }
 	    	});
 		    $('.shaixuan_panelcont').on('click', '.single',
 		    	    function() {
 			    	let $this = $(this);
 			    	$this.hasClass('active') ? $this.removeClass('active') : $this.addClass('active').siblings().removeClass('active');
+		    });
+		    $('.shaixuan_panelcont').on('click', '.datacity',
+		    	    function() {
+			    	let $this = $(this);
+			    	$('div[data-county-div='+$this.attr('data-city')+']').fadeToggle(100).siblings('div').hide();
+			    	//$('div[data-county-div='+$this.attr('data-city')+']').siblings().hide();
 		    });
 		    $('.submit').click(function(){
 		    	submit(1);
@@ -48,16 +59,30 @@
 		 window.location.href="../company/detail?id="+com+"&openid="+openid+"&sphere="+sphere+"&grade="+grade+"&city="+encodeURI(encodeURI(city))+"&oth="+encodeURI(encodeURI(temp));
 	 }
 	 function submit(p){
-		 ageArr = getSelected('age'),county=getSelected('county');
+		 ageArr = getSelected('age'),sphereArr=getSelected('sphere'),gradeArr=getSelected('grade'),recomendArr=getSelected('recomend');
+		 $('.selectbox[data-selectbox-name=county]').find("span").each(function() {
+             let $tag = $(this);
+             if ($tag.hasClass('active')) {
+            	 countyArr.push($tag.attr('data-county'));
+             }
+         });
+		 $('.selectbox[data-selectbox-name=county]').find("span").each(function() {
+             let $tag = $(this);
+             if ($tag.hasClass('active')) {
+            	 cityArr.push($tag.attr('data-city'));
+             }
+         });
 		//请求参数
         let postData = {};
         postData.age=ageArr+"";
-        postData.county=county+"";
+        postData.city=cityArr+"";
+        postData.county=countyArr+"";
         postData.viewOrder=$("input[name=viewOrder]").val();
         postData.ageOrder=$("input[name=ageOrder]").val();
         postData.ageViewOrder=ageViewOrder;
-        postData.grade=grade;
-        postData.sphere=sphere;
+        postData.grade=gradeArr+"";
+        postData.sphere=sphereArr+"";
+        postData.recomend=recomendArr+"";
         postData.openid=openid;
         postData.city=city;
         postData.search=$('input[name=search]').val();

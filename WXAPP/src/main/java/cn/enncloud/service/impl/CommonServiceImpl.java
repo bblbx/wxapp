@@ -6,6 +6,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import cn.enncloud.bean.SelectInfo;
 import cn.enncloud.dao.CommonDao;
 import cn.enncloud.service.CommonService;
 @Service
@@ -17,5 +18,11 @@ public class CommonServiceImpl implements CommonService{
 	public List<Map<String, Object>> getSelectInfo(String typeID) {
 		// TODO Auto-generated method stub
 		return commonDao.getSelectInfo(typeID);
+	}
+
+	@Override
+	public List<SelectInfo> getJiLianSelectInfo(String type) {
+		// TODO Auto-generated method stub
+		return commonDao.getJiLianSelectInfo(type);
 	}
 }
