@@ -56,7 +56,11 @@
 	 }
 	 function showDetail(com){
 		 let temp=$("input[name=ageOrder]").val()+';'+$("input[name=viewOrder]").val()+";"+ageViewOrder+";"+ageArr+";"+county+";"+$('input[name=search]').val()+";";
-		 window.location.href="../company/detail?id="+com+"&openid="+openid+"&sphere="+sphere+"&grade="+grade+"&city="+encodeURI(encodeURI(city))+"&oth="+encodeURI(encodeURI(temp));
+		 window.location.href="../company/detail?id="+com+"&openid="+openid+"&sphere="+sphereArr+
+		 "&grade="+gradeArr+"&city="+cityArr+"&recomend="+recomendArr+"&county="+countyArr+"&age="+ageArr+
+		 "&ageOrder="+$("input[name=ageOrder]").val()+
+		 "&viewOrder="+$("input[name=viewOrder]").val()+"&ageViewOrder="+ageViewOrder+
+		 "&search="+encodeURI(encodeURI($('input[name=search]').val()));
 	 }
 	 function submit(p){
 		 ageArr = getSelected('age'),sphereArr=getSelected('sphere'),gradeArr=getSelected('grade'),recomendArr=getSelected('recomend');
@@ -84,7 +88,6 @@
         postData.sphere=sphereArr+"";
         postData.recomend=recomendArr+"";
         postData.openid=openid;
-        postData.city=city;
         postData.search=$('input[name=search]').val();
         postData.page=p;
         addmask('jq22-scrollView');

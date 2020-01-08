@@ -194,10 +194,10 @@ public class ServletController {
 		params.put("ageViewOrder", ageViewOrder);
 		params.put("search", search);
 		logger.info("用户"+openid+"查询公司列表，参数="+params);
-		List<Map<String,Object>> list = companyService.getCompanySimpleInfoList(params, 1, 20);
+//		List<Map<String,Object>> list = companyService.getCompanySimpleInfoList(params, 1, 20);
 		List<SelectInfo> selectList= commonService.getJiLianSelectInfo("01");
 //		List<Map<String,Object>> selectList =  commonService.getSelectInfo("03");
-		modelAndView.addObject("data", list);
+//		modelAndView.addObject("data", list);
 		modelAndView.addObject("areas", selectList);//区域
 		modelAndView.addObject("grades", commonService.getSelectInfo("01"));//阶段
 		modelAndView.addObject("spheres", commonService.getSelectInfo("02"));//领域
