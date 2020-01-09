@@ -104,8 +104,10 @@
 </div>
 </body>
 <script>
-function back(){
-	window.location.href="../servlet/otherweb?grade=${grade}&openid=${openid}&sphere=${sphere}&city="+encodeURI('${city}')+"&oth="+encodeURI('${oth}');
+function back(){	
+	window.location.href="../servlet/otherweb?grade=${grade}&openid=${openid}&sphere=${sphere}&city="+'${city}'+
+			"&recomend="+'${recomend}'+"&county="+'${county}'+"&age="+'${age}'+"&ageOrder="+'${ageOrder}'+
+			"&viewOrder="+'${viewOrder}'+"&ageViewOrder="+'${ageViewOrder}'+"&search="+encodeURI('${search}');
 }
 
  $( "#target-1" ).HappyImage({

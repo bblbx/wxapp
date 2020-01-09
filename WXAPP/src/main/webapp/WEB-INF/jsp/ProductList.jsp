@@ -12,7 +12,7 @@
 	 <script type="text/javascript" src="../statics/js/jquery-3.2.1.min.js"></script>
 	 <script type="text/javascript" src="../statics/js/menudown.js?v=1.0"></script>
 	 <script type="text/javascript" src="../statics/js/load-min.js?v=1.0"></script>
-	 <script type="text/javascript" src="../statics/js/productlist.js?v=1.3"></script>
+	 <script type="text/javascript" src="../statics/js/productlist.js?v=1.4"></script>
 	 <link href="../statics/css/common.css?v=1.0" rel="stylesheet" type="text/css">
 	 <link href="../statics/css/menudown.css?v=1.1" rel="stylesheet" type="text/css">
 	 <link href="../statics/css/productlist.css?v=1.0"  rel="stylesheet" type="text/css">
@@ -96,7 +96,7 @@
 				</c:forEach>
 				</div>
 			</div>
-			<div class="selectbox" data-selectbox-name="county">
+			<div class="selectbox" data-selectbox-name="area">
 				<div class="title">
 				<span>区县</span>
 				</div>

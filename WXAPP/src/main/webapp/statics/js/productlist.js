@@ -21,7 +21,6 @@
 		    	    function() {
 			    	let $this = $(this);
 			    	$('div[data-county-div='+$this.attr('data-city')+']').fadeToggle(100).siblings('div').hide();
-			    	//$('div[data-county-div='+$this.attr('data-city')+']').siblings().hide();
 		    });
 		    $('.submit').click(function(){
 		    	submit(1);
@@ -63,14 +62,15 @@
 		 "&search="+encodeURI(encodeURI($('input[name=search]').val()));
 	 }
 	 function submit(p){
-		 ageArr = getSelected('age'),sphereArr=getSelected('sphere'),gradeArr=getSelected('grade'),recomendArr=getSelected('recomend');
-		 $('.selectbox[data-selectbox-name=county]').find("span").each(function() {
+		 ageArr = getSelected('age'),sphereArr=getSelected('sphere'),gradeArr=getSelected('grade'),
+		 recomendArr=getSelected('recomend'),countyArr=[],cityArr=[];
+		 $('.selectbox[data-selectbox-name=area]').find(".datacounty").each(function() {
              let $tag = $(this);
              if ($tag.hasClass('active')) {
             	 countyArr.push($tag.attr('data-county'));
              }
          });
-		 $('.selectbox[data-selectbox-name=county]').find("span").each(function() {
+		 $('.selectbox[data-selectbox-name=area]').find(".datacity").each(function() {
              let $tag = $(this);
              if ($tag.hasClass('active')) {
             	 cityArr.push($tag.attr('data-city'));

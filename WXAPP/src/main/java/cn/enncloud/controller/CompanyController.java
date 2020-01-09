@@ -104,9 +104,18 @@ public class CompanyController {
 		String companyid = request.getParameter("id");// 公司的id信息
 		String grade = request.getParameter("grade");// 请求的类型信息
 		String sphere = request.getParameter("sphere");// 请求的类型信息
+		String age = request.getParameter("age");// 年龄
+		String county = request.getParameter("county");// 区县
+		String viewOrder = request.getParameter("viewOrder");// 请求的类型信息
+		String ageOrder = request.getParameter("ageOrder");// 请求的类型信息
 		String openid = request.getParameter("openid");
-		String city = request.getParameter("city");
-		String oth = request.getParameter("oth");
+		String page = request.getParameter("page");
+		String city = request.getParameter("city");//城市
+		String search = request.getParameter("search");//模糊搜索
+		String ageViewOrder = request.getParameter("ageViewOrder");//优先排序字段，age/view
+		String recomend = request.getParameter("recomend");//是否推荐
+		
+		
 		ModelAndView modelAndView = new ModelAndView("ProductDetail");
 		logger.info("查询公司明细，companyid="+companyid+",grade="+grade+",sphere="+sphere+",openid="+openid);
 		if(!DataUtil.IsNull(companyid)){
@@ -122,12 +131,18 @@ public class CompanyController {
 					richlist.add(item);
 				}
 			}
-			modelAndView.addObject("rich", richlist);
+			modelAndView.addObject("openid", openid);
 			modelAndView.addObject("grade", grade);
 			modelAndView.addObject("sphere", sphere);
-			modelAndView.addObject("openid", openid);
-			modelAndView.addObject("oth", oth);
+			modelAndView.addObject("county", county);
 			modelAndView.addObject("city", city);
+			modelAndView.addObject("age", age);
+			modelAndView.addObject("recomend", recomend);
+			modelAndView.addObject("viewOrder", viewOrder);
+			modelAndView.addObject("ageOrder", ageOrder);
+			modelAndView.addObject("ageViewOrder", ageViewOrder);
+			modelAndView.addObject("search", search);
+			modelAndView.addObject("rich", richlist);
 		}
 		//获取js-sdk签名
 		String parms = request.getQueryString();
