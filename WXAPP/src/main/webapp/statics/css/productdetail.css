@@ -272,6 +272,7 @@ font-weight: bold;
 .item .content{
 width: 100%;
 padding: 0.3rem 0.3rem;
+border: 1px solid #fff;
 }
 .foot{
 background-color:#08acee;

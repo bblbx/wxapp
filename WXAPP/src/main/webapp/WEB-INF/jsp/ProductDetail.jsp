@@ -12,8 +12,8 @@
 	 <script type="text/javascript" src="../statics/js/jquery-3.2.1.min.js"></script>
 	 <script type="text/javascript" src="../statics/js/HappyImage.js"></script>
 	 <link href="../statics/css/common.css" rel="stylesheet" type="text/css">
-	 <link href="../statics/css/productdetail.css"  rel="stylesheet" type="text/css">
-	 	 <script src="http://res.wx.qq.com/open/js/jweixin-1.4.0.js"></script>
+	 <link href="../statics/css/productdetail.css?v=1.0"  rel="stylesheet" type="text/css">
+	 	 <script src="https://res.wx.qq.com/open/js/jweixin-1.4.0.js"></script>
 </head>
 <body  >
 <div class="jq22-flexView">
@@ -41,7 +41,7 @@
 </div>
 <div class="item">
 <div class="title"><p>是否连锁品牌</p></div>
-<div class="content">${company[0].IsChainBrand?'否':'是'}</div>
+<div class="content">${company[0].IsChainBrand?'是':'否'}</div>
 </div>
 <div class="item">
 <div class="title"><p>品牌介绍</p></div>

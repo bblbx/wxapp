@@ -85,9 +85,9 @@ public class ServletController {
 		ModelAndView modelAndView = null;
 		if ("other".equals(requestpage)) {
 			modelAndView = new ModelAndView(new RedirectView("../servlet/otherweb"));
-			modelAndView.addObject("sphereF", sphere);
-			modelAndView.addObject("gradeF", grade);
-			modelAndView.addObject("recomendF", grade);
+			modelAndView.addObject("sphere", sphere);
+			modelAndView.addObject("grade", grade);
+			modelAndView.addObject("recomend", recomend);
 			modelAndView.addObject("openid", openid);
 		} else {
 			modelAndView = new ModelAndView(requestpage);

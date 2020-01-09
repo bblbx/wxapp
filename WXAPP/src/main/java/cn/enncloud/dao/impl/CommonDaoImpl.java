@@ -20,7 +20,7 @@ public class CommonDaoImpl implements CommonDao{
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Map<String, Object>> getSelectInfo(String typeID) {
-		String sql = "select `Name`,ID as `Code`  from t_select_info where `Status`=1 and Type=:Type";
+		String sql = "select `Name`,ID as `Code`  from t_select_info where `Status`=1 and Type=:Type order by Code";
 		Query query = sessionFactory.getCurrentSession().createSQLQuery(sql)
 				.setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP);
 		query.setString("Type", typeID);

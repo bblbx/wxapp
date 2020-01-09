@@ -17,7 +17,7 @@
 	 <link href="../statics/css/menudown.css?v=1.1" rel="stylesheet" type="text/css">
 	 <link href="../statics/css/productlist.css?v=1.0"  rel="stylesheet" type="text/css">
 	 <link href="../statics/css/load.css?v=1.0"  rel="stylesheet" type="text/css">
-	 <script src="http://res.wx.qq.com/open/js/jweixin-1.4.0.js"></script>
+	 <script src="https://res.wx.qq.com/open/js/jweixin-1.4.0.js"></script>
 </head>
 <body >
 <div class="jq22-flexView">
