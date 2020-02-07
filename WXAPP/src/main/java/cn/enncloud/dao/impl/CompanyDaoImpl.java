@@ -120,8 +120,8 @@ public class CompanyDaoImpl implements CompanyDao{
 					+ "or com.County like :search or com.Address like :search ) ");
 		}
 		String order="";
-		if("view".equals(params.get("ageViewOrder"))){//优先点击量排序
-			if("0".equals(params.get("viewOrder")) ){//点击量升序
+		if("view".equals(params.get("ageViewOrder"))){//优先点击量（热度）排序
+			if("0".equals(params.get("viewOrder")) ){//点击量（热度）升序
 				order= " order by com.VisitNum asc ";
 			}else if("1".equals(params.get("viewOrder")) ){
 				order= " order by com.VisitNum desc ";
@@ -145,7 +145,7 @@ public class CompanyDaoImpl implements CompanyDao{
 			}else if("1".equals(params.get("ageOrder")) ){
 				order= " order by com.BeginAge desc ";
 			}
-			if("0".equals(params.get("viewOrder")) ){//点击量升序
+			if("0".equals(params.get("viewOrder")) ){//点击量（热度）升序
 				if(order==""){
 					order= " order by com.VisitNum asc ";
 				}else {

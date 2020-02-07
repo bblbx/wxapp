@@ -116,7 +116,7 @@
  							"<h3>服务年龄:<font color='red'>"+serverData.msg[i].BeginAge+"-"+serverData.msg[i].EndAge+"岁</font></h3>"+
  							"</div>"+
  							"<div style='float: right;'>"+
- 							"<h3>点击量:"+serverData.msg[i].VisitNum+"</h3>"+
+ 							"<h3>热度:<font color='red'>"+serverData.msg[i].VisitNum+"</font></h3>"+
  							"</div>"+
  							"</div>"+
  							"</div>"+

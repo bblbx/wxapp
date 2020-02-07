@@ -44,15 +44,15 @@
 		<div class="selectlist">
 			<div class="select_textdiv">
 				<input type="hidden" value="1" name="viewOrder"/>
-				<p class="s_text" name="viewOrderTxt">点击量降序</p><span class="down"><img src="../statics/img/down.png"></span>
+				<p class="s_text" name="viewOrderTxt">热度降序</p><span class="down"><img src="../statics/img/down.png"></span>
 			</div>
 			<div class="select_textul">
 				<ul class="select_first_ul">
 					<li >
-						<p data-value='0'>点击量升序</p>
+						<p data-value='0'>热度升序</p>
 					</li>
 					<li>
-						<p data-value='1'>点击量降序</p>
+						<p data-value='1'>热度降序</p>
 					</li>
 				</ul>
 			</div>
@@ -198,10 +198,10 @@ if(ageOrder=="1"){
 }
 if(viewOrder=="0"){
 	$("input[name=viewOrder]").val('0');
-	$("p[name=viewOrderTxt]").val("点击量升序");
+	$("p[name=viewOrderTxt]").val("热度升序");
 }else {
 	$("input[name=viewOrder]").val('1');
-	$("p[name=viewOrderTxt]").val("点击量降序");
+	$("p[name=viewOrderTxt]").val("热度降序");
 }
 if(ageViewOrder==null || ageViewOrder==''){
 	ageViewOrder='age';
