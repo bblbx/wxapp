@@ -99,8 +99,11 @@
 </c:if>
 </c:forEach>
 </div>
+
 </section>
-<footer class="foot"><a href="tel:${company[0].Phone1}"><div ><img src="../statics/img/phone.png" style="width: 1.5rem;position: relative;bottom: -0.3rem;margin-right: 1rem;">打电话咨询、预约体验课</div></a></footer>
+<footer class="foot"><a href="tel:${company[0].Phone1}"><div ><img src="../statics/img/phone.png" 
+style="width: 1.5rem;position: relative;bottom: -0.3rem;margin-right: 1rem;">打电话咨询、预约体验课</div></a>
+</footer>
 </div>
 </body>
 <script>

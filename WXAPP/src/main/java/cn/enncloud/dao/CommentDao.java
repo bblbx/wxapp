@@ -27,15 +27,29 @@ public interface CommentDao {
 	 */
 	Boolean checkUser(String openid);
 	/**
-	 * 获取评论信息
+	 * 根据公司编码和状态获取评论信息
 	 * @Description: 
 	 * @author: liubaoxun
-	 * @create: 2020年2月3日下午9:37:10
-	 * @update: 2020年2月3日下午9:37:10
+	 * @create: 2020年2月27日上午10:36:10
+	 * @update: 2020年2月27日上午10:36:10
 	 * @param companyID
+	 * @param status
 	 * @param page
 	 * @param limit
 	 * @return List<Map<String,Object>>
 	 */
-	List<Map<String,Object>> queryCommentInfo(String companyID,int page,int limit);
+	List<Map<String,Object>> queryCommentInfo(String companyID,int status,int page,int limit);
+	/**
+	 * 根据评论状态获取指定行数的信息
+	 * @Description: 
+	 * @author: liubaoxun
+	 * @create: 2020年2月27日上午10:36:30
+	 * @update: 2020年2月27日上午10:36:30
+	 * @param status
+	 * @param lines 获取的记录行数
+	 * @return List<Map<String,Object>>
+	 */
+	List<Map<String,Object>> queryCommentInfo(int status,int lines);
+	
+	Boolean updateStatus(int id,int status);
 }

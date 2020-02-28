@@ -28,6 +28,12 @@ public class PropertyConstants {
 		 */
 		String Company = "02";
 	}
+	public interface CommentStatus{
+		int waitting=0;//待审核
+		int passed=1;//审核通过
+		int noPassTooTimes=20;//评论次数过多审核不通过
+		int noPassShenHe=21;//内容不合格审核不通过
+	}
 	/**
 	 * 允许直接访问的白名单页面
 	 */
