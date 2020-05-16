@@ -8,7 +8,7 @@
   <description>kunlun weixin app</description>
   
   <properties>
-        <version.spring>4.2.5.RELEASE</version.spring>
+        <version.spring>5.2.2.RELEASE</version.spring>
 		<version.hibernate>4.3.11.Final</version.hibernate>
 		<version.c3p0>0.9.1.2</version.c3p0>
 		<version.sqljdbc4>4.0.2206.100</version.sqljdbc4>
