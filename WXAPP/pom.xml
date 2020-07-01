@@ -12,7 +12,7 @@
 		<version.hibernate>4.3.11.Final</version.hibernate>
 		<version.c3p0>0.9.1.2</version.c3p0>
 		<version.sqljdbc4>4.0.2206.100</version.sqljdbc4>
-		<version.log4j2>2.8.1</version.log4j2>
+		<version.log4j2>2.13.3</version.log4j2>
 		<logback.version>1.1.7</logback.version>
     </properties>
     
